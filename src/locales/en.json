@@ -1,0 +1,69 @@
+{
+  "header": {
+    "name": "Name",
+    "title": "Title",
+    "location": "Location",
+    "email": "Email",
+    "phone": "Phone",
+    "github": "GitHub",
+    "summary": "Summary"
+  },
+  "education": {
+    "title": "Education",
+    "institution": "Institution",
+    "location": "Location",
+    "degree": "Degree",
+    "date": "Date",
+    "coursework": "Coursework",
+    "add": "Add Education",
+    "remove": "Remove"
+  },
+  "skills": {
+    "title": "Skills & Projects",
+    "programming": "Programming Skills",
+    "design": "Design Skills",
+    "tools": "Tools",
+    "projects": "Projects",
+    "name": "Project Name",
+    "date": "Date",
+    "description": "Description",
+    "add": "Add Project",
+    "remove": "Remove Project"
+  },
+  "experience": {
+    "title": "Experience",
+    "company": "Company",
+    "role": "Role",
+    "date": "Date",
+    "location": "Location",
+    "description": "Description",
+    "add": "Add Experience",
+    "remove": "Remove"
+  },
+  "leadership": {
+    "title": "Leadership",
+    "organization": "Organization",
+    "role": "Role",
+    "date": "Date",
+    "location": "Location",
+    "description": "Description",
+    "add": "Add Leadership",
+    "remove": "Remove"
+  },
+  "certificates": {
+    "title": "Certificates",
+    "name": "Certificate Name",
+    "issuer": "Issuer",
+    "date": "Date",
+    "description": "Description",
+    "add": "Add Certificate",
+    "remove": "Remove"
+  },
+  "actions": {
+    "exportJson": "Export to JSON",
+    "language": "Language"
+  },
+  "app": {
+    "title": "Data Profile"
+  }
+}

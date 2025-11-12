@@ -1,14 +1,15 @@
 // src/App.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import MDEditor from '@uiw/react-md-editor';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'; // Added PDFViewer
 import CVPdf from './components/CVPdf.jsx';
 import './index.css';
-import { useEffect } from 'react';
 import CVPreview from './components/CVPreview.jsx';
-import initialData from './data.jsx';
+import initialData from './data.json';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState(initialData);
 
   const updateField = (section, field, value, index = null) => {
@@ -75,239 +76,313 @@ function App() {
     }));
   };
 
+  // Load data from localStorage on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('cvData');
+    if (savedData) {
+      try {
+        setData(JSON.parse(savedData));
+      } catch (error) {
+        console.error('Error loading saved data:', error);
+      }
+    }
+  }, []);
+
+  // Auto-save to localStorage
+  useEffect(() => {
+    localStorage.setItem('cvData', JSON.stringify(data));
+  }, [data]);
+
+  const exportToJson = () => {
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'cv-data.json';
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div className="app">
       <div className="editor">
-        <h1>Data Profile</h1>
+        <div className="header-controls">
+          <h1>{t('app.title')}</h1>
+          <div className="controls">
+            <select value={i18n.language} onChange={(e) => changeLanguage(e.target.value)}>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+            <button onClick={exportToJson}>{t('actions.exportJson')}</button>
+          </div>
+        </div>
         
         <section>
-          <h3>Header</h3>
+          <h3>{t('header.name')}</h3>
+          <label>{t('header.name')}</label>
           <input
             type="text"
             value={data.header.name}
             onChange={(e) => updateField('header', 'name', e.target.value)}
-            placeholder="Name"
+            placeholder={t('header.name')}
           />
+          <label>{t('header.title')}</label>
           <input
             type="text"
             value={data.header.title}
             onChange={(e) => updateField('header', 'title', e.target.value)}
-            placeholder="Title"
+            placeholder={t('header.title')}
           />
+          <label>{t('header.location')}</label>
           <input
             type="text"
             value={data.header.location}
             onChange={(e) => updateField('header', 'location', e.target.value)}
-            placeholder="Location"
+            placeholder={t('header.location')}
           />
+          <label>{t('header.email')}</label>
           <input
             type="email"
             value={data.header.email}
             onChange={(e) => updateField('header', 'email', e.target.value)}
-            placeholder="Email"
+            placeholder={t('header.email')}
           />
+          <label>{t('header.phone')}</label>
           <input
             type="tel"
             value={data.header.phone}
             onChange={(e) => updateField('header', 'phone', e.target.value)}
-            placeholder="Phone"
+            placeholder={t('header.phone')}
           />
+          <label>{t('header.github')}</label>
           <input
             type="url"
             value={data.header.github}
             onChange={(e) => updateField('header', 'github', e.target.value)}
-            placeholder="GitHub"
+            placeholder={t('header.github')}
           />
         </section>
 
         <section>
-          <h3>Education</h3>
+          <h3>{t('education.title')}</h3>
           {data.education.map((edu, index) => (
-            <div key={index}>
+            <div key={index} className="education-item">
+              <label>{t('education.institution')}</label>
               <input
                 type="text"
                 value={edu.institution}
                 onChange={(e) => updateField('education', 'institution', e.target.value, index)}
-                placeholder="Institution"
+                placeholder={t('education.institution')}
               />
+              <label>{t('education.location')}</label>
               <input
                 type="text"
                 value={edu.location}
                 onChange={(e) => updateField('education', 'location', e.target.value, index)}
-                placeholder="Location"
+                placeholder={t('education.location')}
               />
+              <label>{t('education.degree')}</label>
               <input
                 type="text"
                 value={edu.degree}
                 onChange={(e) => updateField('education', 'degree', e.target.value, index)}
-                placeholder="Degree"
+                placeholder={t('education.degree')}
               />
+              <label>{t('education.date')}</label>
               <input
                 type="text"
                 value={edu.date}
                 onChange={(e) => updateField('education', 'date', e.target.value, index)}
-                placeholder="Date"
+                placeholder={t('education.date')}
               />
+              <label>{t('education.coursework')}</label>
               <MDEditor
                 value={edu.coursework}
                 onChange={(value) => updateField('education', 'coursework', value, index)}
                 preview="edit"
               />
-              <button onClick={() => removeItem('education', index)}>Remove</button>
+              <button onClick={() => removeItem('education', index)}>{t('education.remove')}</button>
             </div>
           ))}
-          <button onClick={() => addItem('education')}>Add Education</button>
+          <button onClick={() => addItem('education')}>{t('education.add')}</button>
         </section>
 
         <section>
-          <h3>Skills & Projects</h3>
+          <h3>{t('skills.title')}</h3>
+          <label>{t('skills.programming')}</label>
           <input
             type="text"
             value={data.skills.programming}
             onChange={(e) => updateField('skills', { programming: e.target.value })}
-            placeholder="Programming Skills"
+            placeholder={t('skills.programming')}
           />
+          <label>{t('skills.design')}</label>
           <input
             type="text"
             value={data.skills.design}
             onChange={(e) => updateField('skills', { design: e.target.value })}
-            placeholder="Design Skills"
+            placeholder={t('skills.design')}
           />
           {data.skills.projects.map((proj, index) => (
-            <div key={index}>
+            <div key={index} className="project-item">
+              <label>{t('skills.name')}</label>
               <input
                 type="text"
                 value={proj.name}
                 onChange={(e) => updateProject(index, 'name', e.target.value)}
-                placeholder="Project Name"
+                placeholder={t('skills.name')}
               />
+              <label>{t('skills.date')}</label>
               <input
                 type="text"
                 value={proj.date}
                 onChange={(e) => updateProject(index, 'date', e.target.value)}
-                placeholder="Date"
+                placeholder={t('skills.date')}
               />
+              <label>{t('skills.description')}</label>
               <MDEditor
                 value={proj.description}
                 onChange={(value) => updateProject(index, 'description', value)}
                 preview="edit"
               />
-              <button onClick={() => removeProject(index)}>Remove Project</button>
+              <button onClick={() => removeProject(index)}>{t('skills.remove')}</button>
             </div>
           ))}
-          <button onClick={addProject}>Add Project</button>
+          <button onClick={addProject}>{t('skills.add')}</button>
         </section>
 
         <section>
-          <h3>Experience</h3>
+          <h3>{t('experience.title')}</h3>
           {data.experience.map((exp, index) => (
-            <div key={index}>
+            <div key={index} className="experience-item">
+              <label>{t('experience.company')}</label>
               <input
                 type="text"
                 value={exp.company}
                 onChange={(e) => updateField('experience', 'company', e.target.value, index)}
-                placeholder="Company"
+                placeholder={t('experience.company')}
               />
+              <label>{t('experience.role')}</label>
               <input
                 type="text"
                 value={exp.role}
                 onChange={(e) => updateField('experience', 'role', e.target.value, index)}
-                placeholder="Role"
+                placeholder={t('experience.role')}
               />
+              <label>{t('experience.date')}</label>
               <input
                 type="text"
                 value={exp.date}
                 onChange={(e) => updateField('experience', 'date', e.target.value, index)}
-                placeholder="Date"
+                placeholder={t('experience.date')}
               />
+              <label>{t('experience.location')}</label>
               <input
                 type="text"
                 value={exp.location}
                 onChange={(e) => updateField('experience', 'location', e.target.value, index)}
-                placeholder="Location"
+                placeholder={t('experience.location')}
               />
+              <label>{t('experience.description')}</label>
               <MDEditor
                 value={exp.description}
                 onChange={(value) => updateField('experience', 'description', value, index)}
                 preview="edit"
               />
-              <button onClick={() => removeItem('experience', index)}>Remove</button>
+              <button onClick={() => removeItem('experience', index)}>{t('experience.remove')}</button>
             </div>
           ))}
-          <button onClick={() => addItem('experience')}>Add Experience</button>
+          <button onClick={() => addItem('experience')}>{t('experience.add')}</button>
         </section>
 
+        {data.leadership && data.leadership.length > 0 && (
         <section>
-          <h3>Leadership</h3>
-          {data.leadership.map((lead, index) => (
-            <div key={index}>
+           <h3>{t('leadership.title')}</h3>
+           {data.leadership.map((lead, index) => (
+            <div key={index} className="leadership-item">
+              <label>{t('leadership.organization')}</label>
               <input
                 type="text"
                 value={lead.organization}
                 onChange={(e) => updateField('leadership', 'organization', e.target.value, index)}
-                placeholder="Organization"
+                placeholder={t('leadership.organization')}
               />
+              <label>{t('leadership.role')}</label>
               <input
                 type="text"
                 value={lead.role}
                 onChange={(e) => updateField('leadership', 'role', e.target.value, index)}
-                placeholder="Role"
+                placeholder={t('leadership.role')}
               />
+              <label>{t('leadership.date')}</label>
               <input
                 type="text"
                 value={lead.date}
                 onChange={(e) => updateField('leadership', 'date', e.target.value, index)}
-                placeholder="Date"
+                placeholder={t('leadership.date')}
               />
+              <label>{t('leadership.location')}</label>
               <input
                 type="text"
                 value={lead.location}
                 onChange={(e) => updateField('leadership', 'location', e.target.value, index)}
-                placeholder="Location"
+                placeholder={t('leadership.location')}
               />
+              <label>{t('leadership.description')}</label>
               <MDEditor
                 value={lead.description}
                 onChange={(value) => updateField('leadership', 'description', value, index)}
                 preview="edit"
               />
-              <button onClick={() => removeItem('leadership', index)}>Remove</button>
+              <button onClick={() => removeItem('leadership', index)}>{t('leadership.remove')}</button>
             </div>
           ))}
-          <button onClick={() => addItem('leadership')}>Add Leadership</button>
+          <button onClick={() => addItem('leadership')}>{t('leadership.add')}</button>
         </section>
+       )}
 
+        {data.certificates && data.certificates.length > 0 && (
         <section>
-          <h3>Certificates</h3>
-          {data.certificates.map((cert, index) => (
-            <div key={index}>
+           <h3>{t('certificates.title')}</h3>
+           {data.certificates.map((cert, index) => (
+            <div key={index} className="certificate-item">
+              <label>{t('certificates.name')}</label>
               <input
                 type="text"
                 value={cert.name}
                 onChange={(e) => updateField('certificates', 'name', e.target.value, index)}
-                placeholder="Certificate Name"
+                placeholder={t('certificates.name')}
               />
+              <label>{t('certificates.issuer')}</label>
               <input
                 type="text"
                 value={cert.issuer}
                 onChange={(e) => updateField('certificates', 'issuer', e.target.value, index)}
-                placeholder="Issuer"
+                placeholder={t('certificates.issuer')}
               />
+              <label>{t('certificates.date')}</label>
               <input
                 type="text"
                 value={cert.date}
                 onChange={(e) => updateField('certificates', 'date', e.target.value, index)}
-                placeholder="Date"
+                placeholder={t('certificates.date')}
               />
+              <label>{t('certificates.description')}</label>
               <MDEditor
                 value={cert.description}
                 onChange={(value) => updateField('certificates', 'description', value, index)}
                 preview="edit"
               />
-              <button onClick={() => removeItem('certificates', index)}>Remove</button>
+              <button onClick={() => removeItem('certificates', index)}>{t('certificates.remove')}</button>
             </div>
           ))}
-          <button onClick={() => addItem('certificates')}>Add Certificate</button>
+          <button onClick={() => addItem('certificates')}>{t('certificates.add')}</button>
         </section>
+       )}
       </div>
 
       <div className="pdf-preview">

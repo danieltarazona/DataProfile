@@ -1,0 +1,69 @@
+{
+  "header": {
+    "name": "Nombre",
+    "title": "Título",
+    "location": "Ubicación",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono",
+    "github": "GitHub",
+    "summary": "Resumen"
+  },
+  "education": {
+    "title": "Educación",
+    "institution": "Institución",
+    "location": "Ubicación",
+    "degree": "Título",
+    "date": "Fecha",
+    "coursework": "Trabajos de Curso",
+    "add": "Agregar Educación",
+    "remove": "Remover"
+  },
+  "skills": {
+    "title": "Habilidades y Proyectos",
+    "programming": "Habilidades de Programación",
+    "design": "Habilidades de Diseño",
+    "tools": "Herramientas",
+    "projects": "Proyectos",
+    "name": "Nombre del Proyecto",
+    "date": "Fecha",
+    "description": "Descripción",
+    "add": "Agregar Proyecto",
+    "remove": "Remover Proyecto"
+  },
+  "experience": {
+    "title": "Experiencia",
+    "company": "Empresa",
+    "role": "Rol",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "description": "Descripción",
+    "add": "Agregar Experiencia",
+    "remove": "Remover"
+  },
+  "leadership": {
+    "title": "Liderazgo",
+    "organization": "Organización",
+    "role": "Rol",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "description": "Descripción",
+    "add": "Agregar Liderazgo",
+    "remove": "Remover"
+  },
+  "certificates": {
+    "title": "Certificados",
+    "name": "Nombre del Certificado",
+    "issuer": "Emisor",
+    "date": "Fecha",
+    "description": "Descripción",
+    "add": "Agregar Certificado",
+    "remove": "Remover"
+  },
+  "actions": {
+    "exportJson": "Exportar a JSON",
+    "language": "Idioma"
+  },
+  "app": {
+    "title": "Perfil de Datos"
+  }
+}

@@ -169,6 +169,7 @@ const CVPdf = ({ data }) => (
         ))}
       </View>
 
+      {data.leadership && data.leadership.length > 0 && (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Leadership</Text>
         {data.leadership.map((lead, index) => (
@@ -185,10 +186,12 @@ const CVPdf = ({ data }) => (
           </View>
         ))}
       </View>
+      )}
 
+      {data.certificates && data.certificates.length > 0 && (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Certificates</Text>
-        {data.certificates.map((cert, index) => (
+        {data.certificates && data.certificates.map((cert, index) => (
           <View key={index} style={styles.item}>
             <View style={styles.row}>
               <Text style={styles.itemTitle}>{cert.name}</Text>
@@ -199,6 +202,7 @@ const CVPdf = ({ data }) => (
           </View>
         ))}
       </View>
+      )}
     </Page>
   </Document>
 );

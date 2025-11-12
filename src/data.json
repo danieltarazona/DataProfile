@@ -1,0 +1,128 @@
+{
+  "header": {
+    "name": "Carolina Vanessa Arteaga García",
+    "title": "Business Administration Professional | Social Impact & Community Development",
+    "location": "Cali, Colombia",
+    "email": "karoll_00@hotmail.com",
+    "phone": "320 542 9547",
+    "summary": "Dynamic Business Administration professional with a strong service orientation and commitment to building fairer, more equitable societies. Proven track record in designing, implementing, and evaluating social initiatives that drive equity, inclusion, and community well-being. Expert in social intervention methodologies, resource management, participatory approaches, strategic planning, and change management. Skilled in coordinating multidisciplinary teams and forging strategic alliances with key stakeholders. Leadership, conflict resolution, and intercultural communication abilities enable optimal team coordination and results delivery."
+  },
+  "education": [
+    {
+      "institution": "Universidad Santiago de Cali",
+      "location": "Cali, Colombia",
+      "degree": "Business Administration (B.A.)",
+      "date": "2020",
+      "coursework": "Business management, strategic planning, community development initiatives, organizational leadership."
+    }
+  ],
+  "skills": {
+    "programming": "JavaScript, PHP, HTML, PostgreSQL",
+    "design": "",
+    "projects": []
+  },
+  "experience": [
+    {
+      "company": "Paz Lab ONG",
+      "role": "Legal Representative & Founder",
+      "date": "Present",
+      "location": "Cali, Colombia",
+      "description": "Founded and lead Paz Lab ONG, a non-governmental organization dedicated to promoting quality education, gender equality, community development, child protection, human rights, health, peace, and economic growth to improve the quality of life for Colombian citizens. Key achievements: Designed comprehensive organizational strategy, legal constitution, and operational framework; Secured strategic partnerships and funding to ensure long-term sustainability; Led impactful programs benefiting 150+ families in underdeveloped human settlements, significantly increasing children's participation in extracurricular activities related to education, culture, recreation, and sports; Implemented robust child protection initiatives and psychosocial support for victims of violence, abuse, and exploitation; Strengthened community support networks and fostered active child involvement in decision-making processes affecting their environment."
+    },
+    {
+      "company": "Secretaría del Deporte y la Recreación Cali",
+      "role": "Administrative Support – Events & Operations",
+      "date": "Present",
+      "location": "Cali, Colombia",
+      "description": "Planned and executed innovative local, national, and international sports and recreational events. Developed comprehensive event schedules, managed budgets, coordinated suppliers, and secured sponsorships to ensure seamless execution and stakeholder satisfaction."
+    },
+    {
+      "company": "SuSoftware",
+      "role": "Junior Software Developer",
+      "date": "Jan 2023 – Jun 2023",
+      "location": "Cali, Colombia",
+      "description": "Developed dynamic web applications using JavaScript, PHP, HTML, and PostgreSQL, focusing on form creation and database integration to support business operations."
+    },
+    {
+      "company": "Secretaría del Deporte y la Recreación Cali",
+      "role": "Administrative Lead – Quality & Process Management",
+      "date": "2020 – 2022",
+      "location": "Cali, Colombia",
+      "description": "Led a 15-member administrative team in optimizing internal processes and documentation for the Rutas D'Vida program. Designed and implemented an effective internal communication plan to enhance team alignment and operational efficiency. Developed comprehensive training and support materials for the Quality Management System, supporting the program's successful nomination for the National High Management Award."
+    },
+    {
+      "company": "Colombian Olympic Committee / Pan American Junior Games 2021",
+      "role": "Administrative Support – Logistics",
+      "date": "Nov 2021 – Dec 2021",
+      "location": "Cali, Colombia",
+      "description": "Delivered administrative support in logistics for the II Pan American Junior Games Cali-Valle 2021. Coordinated comprehensive procurement and inventory management of sports equipment, ensuring timely supplier deliveries and full operational readiness for the event."
+    },
+    {
+      "company": "INVIMA – National Institute for Food & Drug Surveillance",
+      "role": "Operational Support",
+      "date": "Jul 2020 – Dec 2020",
+      "location": "Cali, Colombia",
+      "description": "Delivered operational support in inspection and regulatory enforcement activities as part of the Integrated Center ICA-INVIMA-POLFA/DIAN (CIIIP). Generated detailed formal reports and responses to official regulatory requests, supporting anti-illegality initiatives in the food and drug surveillance sector."
+    },
+    {
+      "company": "Secretaría del Deporte y la Recreación Cali",
+      "role": "Community Sports Program Lead",
+      "date": "2017 – 2019",
+      "location": "Cali, Colombia",
+      "description": "Led a territorial team in promoting institutional sports and citizen participation in community sports facilities across communes 3, 9, 10, 11, and 12. Established 50+ civic sports committees to enhance community ownership and public sports space appropriation. Improved infrastructure in over 20 community sports areas using municipal and private resources. Directed Sport Fest Cali 2018, drawing 60,000 attendees and fostering reflection on social sports and public policies. Drove social transformation through art and sports, including mural painting in high-conflict zones to reduce vandalism and encourage peaceful space utilization. Integrated extensive social and institutional networks encompassing youth groups, sports clubs, neighborhood associations, disability organizations, artists, senior groups, and women's networks. Organized large-scale sports events attracting over 500 participants, collaborating with entities such as DAGMA, Social Welfare Secretariat, and Peace and Culture Secretariat. Managed restitution processes for 5 irregularly occupied sports facilities with legal support."
+    }
+  ],
+  "leadership": [
+    {
+      "organization": "Paz Lab ONG",
+      "role": "Founder & Legal Representative",
+      "date": "Present",
+      "location": "Cali, Colombia",
+      "description": "Founded Paz Lab ONG, establishing its mission, vision, and operational structure. Secured legal registration, partnerships, and funding for sustainability. Led programs impacting 150+ families in education, gender equality, and child protection."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Programming Fundamentals",
+      "issuer": "Ministry of Information Technologies and Communications and University of Caldas",
+      "date": "2022",
+      "description": ""
+    },
+    {
+      "name": "Basic Programming Diploma",
+      "issuer": "Ministry of Information Technologies and Communications and University of Caldas",
+      "date": "2022",
+      "description": ""
+    },
+    {
+      "name": "Software Development",
+      "issuer": "Ministry of Information Technologies and Communications and University of Caldas",
+      "date": "2022",
+      "description": ""
+    },
+    {
+      "name": "Diploma in Programming Skills with Emphasis on Web Applications",
+      "issuer": "Ministry of Information Technologies and Communications and University of Caldas",
+      "date": "2022",
+      "description": ""
+    },
+    {
+      "name": "Data Analytics Fundamentals",
+      "issuer": "Ministry of Information Technologies and Communications",
+      "date": "2022",
+      "description": ""
+    },
+    {
+      "name": "Diploma in Leadership Training for Local Development Based on Science, Technology and Transformative Innovation",
+      "issuer": "Governorate of Valle del Cauca",
+      "date": "2021",
+      "description": ""
+    },
+    {
+      "name": "Intermediate English",
+      "issuer": "SENA",
+      "date": "2010",
+      "description": ""
+    }
+  ]
+}
