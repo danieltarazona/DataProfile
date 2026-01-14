@@ -1,0 +1,9 @@
+# Cloudflare Pages Configuration
+# For static site deployment, use: wrangler pages deploy dist
+
+name = "danieltarazonaprofile"
+compatibility_date = "2025-01-14"
+
+# Static assets configuration for Pages
+[assets]
+directory = "./out"
