@@ -13,10 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DataProfile NextGen - CV Editor",
+  title: "Data Profile - CV Editor",
   description: "A premium CV editor with live PDF preview, built with Next.js and DataKitReactUICore",
   keywords: ["CV", "Resume", "Editor", "PDF", "React", "Next.js"],
   authors: [{ name: "Daniel Tarazona" }],
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

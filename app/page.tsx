@@ -18,6 +18,7 @@ import LeadershipSection from '@/components/LeadershipSection';
 import CertificatesSection from '@/components/CertificatesSection';
 import Sidebar from '@/components/Sidebar';
 import TopBar from '@/components/TopBar';
+import Login from '@/components/Login';
 
 // Dynamic import for PDF to avoid SSR issues
 const PDFPreviewPanel = dynamic(() => import('@/components/PDFPreviewPanel'), {
@@ -31,51 +32,127 @@ const PDFPreviewPanel = dynamic(() => import('@/components/PDFPreviewPanel'), {
 
 type SectionId = 'header' | 'education' | 'skills' | 'experience' | 'leadership' | 'certificates';
 
+// Get data file based on language
+const getDataFile = (lang: string): string => {
+  switch (lang) {
+    case 'es':
+      return '/data-es.json';
+    case 'fr':
+      return '/data-fr.json';
+    default:
+      return '/data.json';
+  }
+};
+
 export default function Home() {
   const { t, i18n } = useTranslation();
   const [current, send] = useMachine(cvMachine);
   const [activeSection, setActiveSection] = useState<SectionId>('header');
   const [showPreview, setShowPreview] = useState(true);
 
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+
   const { data, isDirty, lastSaved } = current.context;
 
-  // Load data from localStorage or fetch initial data
+  // Check session on mount
   useEffect(() => {
-    const loadData = async () => {
-      // Try localStorage first
-      const savedData = localStorage.getItem('cvData');
-      if (savedData) {
-        try {
-          const parsed = JSON.parse(savedData) as CVData;
-          send({ type: 'LOAD_DATA', data: parsed });
-          return;
-        } catch (e) {
-          console.error('Error loading saved data:', e);
-        }
-      }
-
-      // Fetch initial data
+    const checkSession = async () => {
       try {
-        const response = await fetch('/data.json');
-        const initialData = await response.json() as CVData;
-        send({ type: 'LOAD_DATA', data: initialData });
-      } catch (e) {
-        console.error('Error loading initial data:', e);
+        const response = await fetch('/api/verify', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        setIsAuthenticated(response.ok);
+      } catch {
+        setIsAuthenticated(false);
       }
     };
+    checkSession();
+  }, []);
 
-    loadData();
+  // Load data based on language
+  const loadDataForLanguage = useCallback(async (lang: string) => {
+    // Try localStorage first (only for current language)
+    const savedKey = `cvData_${lang}`;
+    const savedData = localStorage.getItem(savedKey);
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData) as CVData;
+        send({ type: 'LOAD_DATA', data: parsed });
+        return;
+      } catch (e) {
+        console.error('Error loading saved data:', e);
+      }
+    }
+
+    // Fetch data for the language
+    try {
+      const dataFile = getDataFile(lang);
+      const response = await fetch(dataFile);
+      const initialData = await response.json() as CVData;
+      send({ type: 'LOAD_DATA', data: initialData });
+    } catch (e) {
+      console.error('Error loading initial data:', e);
+    }
   }, [send]);
 
-  // Auto-save on changes (debounced)
+  // Load data when authenticated or language changes
   useEffect(() => {
-    if (isDirty) {
+    if (isAuthenticated) {
+      loadDataForLanguage(i18n.language);
+    }
+  }, [isAuthenticated, i18n.language, loadDataForLanguage]);
+
+  // Save to language-specific key
+  useEffect(() => {
+    if (isDirty && isAuthenticated) {
       const timer = setTimeout(() => {
+        // Save to language-specific key
+        const saveKey = `cvData_${i18n.language}`;
+        localStorage.setItem(saveKey, JSON.stringify(data));
         send({ type: 'SAVE' });
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [isDirty, send, data]);
+  }, [isDirty, send, data, i18n.language, isAuthenticated]);
+
+  // Handle login
+  const handleLogin = async (email: string, password: string) => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        setIsAuthenticated(true);
+      } else {
+        setAuthError('Invalid credentials');
+      }
+    } catch {
+      setAuthError('Login failed');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } finally {
+      setIsAuthenticated(false);
+    }
+  };
 
   // Export to JSON
   const exportToJson = useCallback(() => {
@@ -88,9 +165,10 @@ export default function Home() {
     linkElement.click();
   }, [data]);
 
-  // Change language
+  // Change language and reload data
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    // Data will reload via useEffect
   };
 
   // Scroll to section
@@ -102,6 +180,32 @@ export default function Home() {
     }
   };
 
+  // Loading state
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+          className="w-8 h-8 border-3 border-[var(--color-primary)]/30 border-t-[var(--color-primary)] rounded-full"
+        />
+      </div>
+    );
+  }
+
+  // Login screen
+  if (!isAuthenticated) {
+    return (
+      <Login
+        onLogin={handleLogin}
+        isLoading={authLoading}
+        error={authError}
+        onClearError={() => setAuthError(null)}
+      />
+    );
+  }
+
+  // Main editor
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--color-background)]">
       {/* Sidebar Navigation */}
@@ -121,6 +225,7 @@ export default function Home() {
           showPreview={showPreview}
           isDirty={isDirty}
           lastSaved={lastSaved}
+          onLogout={handleLogout}
         />
 
         {/* Content */}

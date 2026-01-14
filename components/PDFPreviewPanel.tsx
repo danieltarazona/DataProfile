@@ -1,6 +1,7 @@
 'use client';
 
 import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import { useTranslation } from 'react-i18next';
 import type { CVData } from '@/lib/types';
 
 const FONT_SIZE = 10;
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
 
 // CV PDF Document
 function CVDocument({ data }: { data: CVData }) {
+    const { t } = useTranslation();
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -117,7 +119,7 @@ function CVDocument({ data }: { data: CVData }) {
                 {/* Education */}
                 {data.education.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Education</Text>
+                        <Text style={styles.sectionTitle}>{t('education.title')}</Text>
                         {data.education.map((edu, index) => (
                             <View key={index} style={styles.item}>
                                 <View style={styles.row}>
@@ -137,16 +139,16 @@ function CVDocument({ data }: { data: CVData }) {
                 {/* Skills */}
                 {(data.skills.programming || data.skills.design || data.skills.projects.length > 0) && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Technical Skills & Projects</Text>
+                        <Text style={styles.sectionTitle}>{t('skills.title')}</Text>
                         {data.skills.programming && (
                             <Text style={styles.skillsList}>
-                                <Text style={styles.skillLabel}>Programming: </Text>
+                                <Text style={styles.skillLabel}>{t('skills.programming')}: </Text>
                                 {data.skills.programming}
                             </Text>
                         )}
                         {data.skills.design && (
                             <Text style={styles.skillsList}>
-                                <Text style={styles.skillLabel}>Design: </Text>
+                                <Text style={styles.skillLabel}>{t('skills.design')}: </Text>
                                 {data.skills.design}
                             </Text>
                         )}
@@ -165,7 +167,7 @@ function CVDocument({ data }: { data: CVData }) {
                 {/* Experience */}
                 {data.experience.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Professional Experience</Text>
+                        <Text style={styles.sectionTitle}>{t('experience.title')}</Text>
                         {data.experience.map((exp, index) => (
                             <View key={index} style={styles.item}>
                                 <View style={styles.row}>
@@ -185,7 +187,7 @@ function CVDocument({ data }: { data: CVData }) {
                 {/* Leadership */}
                 {data.leadership.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Leadership & Awards</Text>
+                        <Text style={styles.sectionTitle}>{t('leadership.title')}</Text>
                         {data.leadership.map((lead, index) => (
                             <View key={index} style={styles.item}>
                                 <View style={styles.row}>
@@ -205,7 +207,7 @@ function CVDocument({ data }: { data: CVData }) {
                 {/* Certificates */}
                 {data.certificates.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Certifications</Text>
+                        <Text style={styles.sectionTitle}>{t('certificates.title')}</Text>
                         {data.certificates.map((cert, index) => (
                             <View key={index} style={styles.item}>
                                 <View style={styles.row}>
@@ -228,12 +230,13 @@ interface PDFPreviewPanelProps {
 }
 
 export default function PDFPreviewPanel({ data }: PDFPreviewPanelProps) {
+    const { t } = useTranslation();
     return (
         <div className="h-full flex flex-col bg-[var(--color-background)]">
             {/* Header */}
             <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-card)]">
                 <h2 className="text-lg font-semibold text-[var(--color-text)]">
-                    📄 PDF Preview
+                    📄 {t('actions.preview')}
                 </h2>
             </div>
 

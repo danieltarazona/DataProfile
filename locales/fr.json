@@ -1,0 +1,99 @@
+{
+    "app": {
+        "title": "Data Profile Generator",
+        "subtitle": "Éditeur de CV",
+        "description": "Créez et éditez votre CV professionnel avec aperçu PDF en direct"
+    },
+    "nav": {
+        "header": "Informations Personnelles",
+        "education": "Formation",
+        "skills": "Compétences et Projets",
+        "experience": "Expérience",
+        "leadership": "Leadership",
+        "certificates": "Certificats"
+    },
+    "header": {
+        "title": "Informations Personnelles",
+        "name": "Nom Complet",
+        "jobTitle": "Titre Professionnel",
+        "location": "Localisation",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "github": "URL GitHub",
+        "summary": "Résumé Professionnel"
+    },
+    "education": {
+        "title": "Formation",
+        "institution": "Institution",
+        "location": "Localisation",
+        "degree": "Diplôme",
+        "date": "Date",
+        "coursework": "Cours / Description",
+        "add": "Ajouter Formation",
+        "remove": "Supprimer"
+    },
+    "skills": {
+        "title": "Compétences et Projets",
+        "programming": "Compétences en Programmation",
+        "design": "Compétences en Design",
+        "tools": "Outils et Technologies",
+        "projects": "Projets",
+        "projectName": "Nom du Projet",
+        "projectDate": "Date",
+        "projectDescription": "Description",
+        "add": "Ajouter Projet",
+        "remove": "Supprimer Projet"
+    },
+    "experience": {
+        "title": "Expérience Professionnelle",
+        "company": "Entreprise",
+        "role": "Poste / Position",
+        "date": "Date",
+        "location": "Localisation",
+        "description": "Description",
+        "add": "Ajouter Expérience",
+        "remove": "Supprimer"
+    },
+    "leadership": {
+        "title": "Leadership et Distinctions",
+        "organization": "Organisation",
+        "role": "Rôle / Distinction",
+        "date": "Date",
+        "location": "Localisation",
+        "description": "Description",
+        "add": "Ajouter Leadership",
+        "remove": "Supprimer"
+    },
+    "certificates": {
+        "title": "Certifications",
+        "name": "Nom du Certificat",
+        "issuer": "Émetteur",
+        "date": "Date",
+        "description": "Description",
+        "add": "Ajouter Certificat",
+        "remove": "Supprimer"
+    },
+    "actions": {
+        "save": "Enregistrer",
+        "saved": "Enregistré",
+        "saving": "Enregistrement...",
+        "exportJson": "Exporter JSON",
+        "exportPdf": "Exporter PDF",
+        "preview": "Aperçu",
+        "language": "Langue"
+    },
+    "messages": {
+        "autoSaved": "Enregistré automatiquement",
+        "exportSuccess": "Exporté avec succès",
+        "loadedFromStorage": "Chargé depuis les données sauvegardées"
+    },
+    "auth": {
+        "title": "Connexion",
+        "email": "E-mail",
+        "password": "Mot de passe",
+        "login": "Se connecter",
+        "logout": "Déconnexion",
+        "error": "E-mail ou mot de passe incorrect",
+        "loading": "Connexion en cours..."
+    }
+}

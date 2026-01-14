@@ -1,6 +1,6 @@
 {
     "app": {
-        "title": "DataProfile NextGen",
+        "title": "Data Profile Generator",
         "subtitle": "Editor de CV",
         "description": "Crea y edita tu CV profesional con vista previa de PDF en vivo"
     },
@@ -86,5 +86,14 @@
         "autoSaved": "Guardado automáticamente",
         "exportSuccess": "Exportado exitosamente",
         "loadedFromStorage": "Cargado desde datos guardados"
+    },
+    "auth": {
+        "title": "Iniciar Sesión",
+        "email": "Correo Electrónico",
+        "password": "Contraseña",
+        "login": "Ingresar",
+        "logout": "Cerrar Sesión",
+        "error": "Correo o contraseña incorrectos",
+        "loading": "Ingresando..."
     }
 }

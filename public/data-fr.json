@@ -1,0 +1,129 @@
+{
+    "header": {
+        "name": "Daniel Tarazona",
+        "title": "Développeur Mobile / Tireur / Artiste Martial",
+        "location": "Medellín, Colombie",
+        "email": "shiftcipher@hotmail.com",
+        "phone": "+57 315 837 5156",
+        "github": "https://github.com/danieltarazona",
+        "summary": "Développeur, Tireur et Artiste Martial avec plus de 8 ans d'expérience en développement iOS et 6+ ans de pratique des arts martiaux. Bilan éprouvé de livraison d'applications mobiles à fort impact qui ont augmenté la rétention des utilisateurs, réduit la fraude et accéléré le déploiement. Expert en intégration IA pour des solutions évolutives centrées sur l'utilisateur."
+    },
+    "education": [
+        {
+            "institution": "LIGUE SPORTIVE DE TIR D'ANTIOQUIA",
+            "location": "Medellin, Colombie",
+            "degree": "Tireur",
+            "date": "2025",
+            "coursework": "Pratiquant de Tir Sportif axé sur la précision et le contrôle sous pression. Compétiteur aux événements nationaux démontrant discipline et concentration mentale."
+        },
+        {
+            "institution": "GLOBALOCK TRAINING - AGLOSS",
+            "location": "Palmira, Colombie",
+            "degree": "Cours d'Escorte VIP",
+            "date": "2023",
+            "coursework": "Cours d'Escorte VIP couvrant les tactiques de protection personnelle, l'évaluation des menaces et les protocoles de sécurité."
+        },
+        {
+            "institution": "UNIVERSIDAD DEL VALLE",
+            "location": "Cali, Colombie",
+            "degree": "Licence en Génie Logiciel (Cours; En Cours)",
+            "date": "2017 - 2021",
+            "coursework": "Maîtrise des structures de données avancées et interpréteurs en Scheme (Lisp) et C++, processeurs et architecture informatique, programmation interactive Java, calcul, algèbre linéaire, physique, apprentissage automatique, intelligence artificielle."
+        },
+        {
+            "institution": "SERVICIO NACIONAL DE APRENDIZAJE (SENA)",
+            "location": "Cali, Colombie",
+            "degree": "Diplôme Technique en Analyse et Développement de Systèmes IT",
+            "date": "2015 - 2018",
+            "coursework": "Cours Pertinents: SQL, SDK Node.js pour Oracle, Oracle, MySQL, PostgreSQL, Android, C#, et PHP."
+        },
+        {
+            "institution": "MASSACHUSETTS INSTITUTE OF TECHNOLOGY - UNIVERSIDAD ICESI",
+            "location": "Cali, Colombie",
+            "degree": "MIT - Global Startup Labs Entrepreneuriat en Technologie Mobile",
+            "date": "2013",
+            "coursework": "Immersion en Django, Python, Java, Android, HTML, CSS3, SASS, Bootstrap, Emmet, favorisant l'ingéniosité entrepreneuriale en technologie mobile."
+        }
+    ],
+    "skills": {
+        "programming": "Swift, Objective-C, C, C++, C#, Solidity, JavaScript, Node.js, React Native, Python, Java, PHP, Laravel, GraphQL, HTML5, CSS3, SASS, Bootstrap, TypeScript, Redux, Firebase, SQLite.",
+        "design": "Adobe XD, Figma, Sketch 3, Adobe Comp CC, Autodesk Revit, Autodesk AutoCAD, Rhinoceros 3D, Blender, Lumion, V-Ray, Grasshopper 3D.",
+        "tools": "Xcode, Android Studio, Unity, VS Code, Git, Jenkins, Fastlane, CocoaPods, Carthage, SPM.",
+        "projects": [
+            {
+                "name": "Langues Parlées:",
+                "date": "",
+                "description": "Espagnol (Natif), Anglais (C1 Compétence Professionnelle Complète), Français (B1 Compétence Professionnelle de Travail), Japonais (A2 Compétence de Travail Limitée), Allemand (A1 Compétence Élémentaire)."
+            },
+            {
+                "name": "Lululemon Athletica - GuestApp - App iOS",
+                "date": "Avril 2022 - Présent",
+                "description": "Développé SDK avec suivi Awin et Adobe Analytics pour les insights de conversion et ventes. Redessiné les notifications utilisant Generics (+25% réutilisabilité) et réduit la fraude de 35%."
+            },
+            {
+                "name": "GSS Gyro Stabilized Systems - Orion - App macOS",
+                "date": "Avril 2024 - Août 2024",
+                "description": "Architecturé app Linux pour contrôle de caméra gyro-stabilisée 4K sur contrôleurs portables utilisant C/C++/C# avec FFmpeg, GStreamer, Blackmagic SDI, et DirectLink."
+            }
+        ]
+    },
+    "experience": [
+        {
+            "company": "ENDAVA",
+            "role": "Ingénieur iOS Senior",
+            "date": "Mars 2022 - Présent",
+            "description": "Ingénierie de solutions iOS avancées pour clients mondiaux, intégrant SwiftUI, Combine, et Core Data pour apps évolutives. Direction du développement de SDKs d'authentification et analytics, réduisant le temps d'intégration de 40%.",
+            "location": "Télétravail / Medellín, Antioquia, Colombie"
+        },
+        {
+            "company": "",
+            "role": "Leader Communauté Mobile Colombie",
+            "date": "Février 2023 - Présent",
+            "description": "Fondé et dirigé la Communauté Mobile Colombie, favorisant la collaboration et le partage de connaissances parmi 50+ ingénieurs mobiles. Organisé 10+ sessions techniques.",
+            "location": "Télétravail / Medellín, Antioquia, Colombie"
+        },
+        {
+            "company": "KOOMBEA",
+            "role": "Ingénieur iOS Senior pour Trainerz",
+            "date": "Janvier 2022 - Mars 2022",
+            "description": "Dirigé les avancées UI/UX en SwiftUI pour app de santé spécialisée servant les femmes enceintes. Intégré Firebase pour authentification.",
+            "location": "Télétravail / Barranquilla, Atlántico, Colombie"
+        }
+    ],
+    "leadership": [
+        {
+            "organization": "MeetUp Vapor, Swift & SwiftConf",
+            "role": "Fondateur et Leader",
+            "date": "2015 - Présent",
+            "description": "Fondé et dirigé une communauté prospère dédiée à la collaboration en développement mobile et au partage de connaissances. Organisé 10+ événements.",
+            "location": "Cali, Colombie"
+        },
+        {
+            "organization": "MINISTÈRE DE L'ÉDUCATION NATIONALE (MEN)",
+            "role": "Meilleurs Scores Nationaux Saber Pro 2017 – Technologue IT",
+            "date": "Décembre 2018",
+            "description": "Honoré pour avoir obtenu les meilleurs scores nationaux à l'évaluation Saber Pro IT.",
+            "location": "Bogotá, Colombie"
+        }
+    ],
+    "certificates": [
+        {
+            "name": "AWS Cloud Practitioner",
+            "issuer": "AWS Training & Certification",
+            "date": "7 Décembre 2023",
+            "description": "Certification AWS Cloud Practitioner complétée, démontrant une expertise fondamentale en informatique cloud."
+        },
+        {
+            "name": "Generative AI for Developers",
+            "issuer": "O'Reilly",
+            "date": "Mai 2024",
+            "description": "Certification en IA Générative pour Développeurs complétée, débloquant des techniques avancées en création de contenu pilotée par IA."
+        },
+        {
+            "name": "RAG",
+            "issuer": "O'Reilly",
+            "date": "Mai 2024",
+            "description": "Certifié en RAG (Retrieval-Augmented Generation), améliorant les capacités en intégration de modèles IA."
+        }
+    ]
+}
