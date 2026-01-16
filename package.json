@@ -12,7 +12,7 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "deploy": "./scripts/deploy.sh",
-    "publish": "git add . && git commit -m 'DataKitReactUICore' && git checkout dev && git push && git checkout main && git merge dev && git push && git checkout dev",
+    "publish": "git checkout dev && git add . && git commit -m 'DataKitReactProfile' && git push && git checkout main && git merge dev && git push",
     "sync:uicore": "CF_CLIENT_ID='pass://DATA/DataKitReactUICore/client_id' CF_CLIENT_SECRET='pass://DATA/DataKitReactUICore/client_secret' pass-cli run -- deno run --allow-all scripts/sync-uicore.ts"
   },
   "dependencies": {
