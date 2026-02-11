@@ -1,0 +1,56 @@
+# robots.txt - DataReact Profile
+# https://datareactprofile.pages.dev/
+
+# Allow search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Anthropic-AI
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Gemini
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Cohere-AI
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# Default: allow web crawlers
+User-agent: *
+Allow: /

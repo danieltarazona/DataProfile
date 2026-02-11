@@ -14,10 +14,11 @@
     "preview": "pnpm build && wrangler pages dev out --compatibility-date=2024-01-01 --compatibility-flags=nodejs_compat",
     "deploy": "./scripts/deploy.sh",
     "publish": "git checkout dev && git add . && git commit -m 'DataKitReactProfile' && git push && git checkout main && git merge dev && git push",
-    "sync:uicore": "CF_CLIENT_ID='pass://DATA/DataKitReactUICore/client_id' CF_CLIENT_SECRET='pass://DATA/DataKitReactUICore/client_secret' pass-cli run -- deno run --allow-all scripts/sync-uicore.ts"
+    "sync:core": "CF_CLIENT_ID='pass://DATA/DataKitReactCore/client_id' CF_CLIENT_SECRET='pass://DATA/DataKitReactCore/client_secret' pass-cli run -- deno run --allow-all scripts/sync-core.ts @datakit/react-core",
+    "sync:latest": "pnpm run sync:core"
   },
   "dependencies": {
-    "@datakit/react-ui-core": "file:libs/datakit-react-ui-core.tgz",
+    "@datakit/react-core": "file:libs/datakit-react-core-latest.tgz",
     "@react-pdf/renderer": "^4.3.2",
     "@uiw/react-md-editor": "^4.0.11",
     "@xstate/react": "^6.0.0",

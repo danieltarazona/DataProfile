@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@datakit/react-ui-core':
-        specifier: file:libs/datakit-react-ui-core.tgz
-        version: file:libs/datakit-react-ui-core.tgz(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@datakit/react-core':
+        specifier: file:libs/datakit-react-core.tgz
+        version: file:libs/datakit-react-core.tgz(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-pdf/renderer':
         specifier: ^4.3.2
         version: 4.3.2(react@19.2.3)
@@ -156,8 +156,8 @@ packages:
   '@cloudflare/workers-types@4.20260116.0':
     resolution: {integrity: sha512-iMZIQDco7ARzzH+r8j90757kbPKEetKY3/6V5UurOzS6T1GJ+rsREw5i7vlBA4XjFV5UMaPtUD6HuUFSMLcxPQ==}
 
-  '@datakit/react-ui-core@file:libs/datakit-react-ui-core.tgz':
-    resolution: {integrity: sha512-b416EEvuyjGD9M5C453wK/s6ssWsU1XC3Ij/zIPrvlsrJVPz+Wzi1OcYFIKr4+BN9SM0igUyV46wL2iFsOb0Rw==, tarball: file:libs/datakit-react-ui-core.tgz}
+  '@datakit/react-core@file:libs/datakit-react-core.tgz':
+    resolution: {integrity: sha512-b416EEvuyjGD9M5C453wK/s6ssWsU1XC3Ij/zIPrvlsrJVPz+Wzi1OcYFIKr4+BN9SM0igUyV46wL2iFsOb0Rw==, tarball: file:libs/datakit-react-core.tgz}
     version: 1.1.3
     peerDependencies:
       react: '>=18.0.0'
@@ -2865,7 +2865,7 @@ snapshots:
 
   '@cloudflare/workers-types@4.20260116.0': {}
 
-  '@datakit/react-ui-core@file:libs/datakit-react-ui-core.tgz(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@datakit/react-core@file:libs/datakit-react-core.tgz(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@hono/zod-validator': 0.4.3(hono@4.11.4)(zod@3.25.76)
       '@react-pdf/renderer': 3.4.5(react@19.2.3)

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "@datakit/react-ui-core/styles.css";
+import "@datakit/react-core/styles.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Data Profile - CV Editor",
-  description: "A premium CV editor with live PDF preview, built with Next.js and DataKitReactUICore",
+  description: "A premium CV editor with live PDF preview, built with Next.js and DataKitReactCore",
   keywords: ["CV", "Resume", "Editor", "PDF", "React", "Next.js"],
   authors: [{ name: "Daniel Tarazona" }],
   icons: {

@@ -12,11 +12,11 @@ import {
   HeaderSection, EducationSection, SkillsSection, ExperienceSection,
   LeadershipSection, CertificatesSection, Sidebar, TopBar, Login,
   type CVData
-} from '@datakit/react-ui-core';
+} from '@datakit/react-core';
 
 // Dynamic import for PDF to avoid SSR issues
 // Dynamic import for PDF to avoid SSR issues
-const PDFPreviewPanel = dynamic(() => import('@datakit/react-ui-core').then(mod => mod.PDFPreviewPanel), {
+const PDFPreviewPanel = dynamic(() => import('@datakit/react-core').then(mod => mod.PDFPreviewPanel), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-full">
@@ -245,7 +245,7 @@ export default function Home() {
         </Sidebar.Content>
         <Sidebar.Footer>
           <div className="p-2 text-xs text-center text-[var(--color-text-muted)]">
-            Built with DataKitReactUICore
+            Built with DataKitReactCore
           </div>
         </Sidebar.Footer>
       </Sidebar>

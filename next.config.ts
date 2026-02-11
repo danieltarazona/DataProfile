@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   // Add trailing slashes for better compatibility
   trailingSlash: true,
 
-  transpilePackages: ['@datakit/react-ui-core'],
+  transpilePackages: ['@datakit/react-core'],
 
   serverExternalPackages: ['@react-pdf/renderer'],
 
