@@ -380,19 +380,25 @@ export default function Home() {
                 transition={{ duration: 0.3 }}
                 className="border-l border-[var(--color-border)] overflow-hidden"
               >
-                <PDFPreviewPanel
-                  data={data}
-                  labels={{
-                    preview: t('actions.preview'),
-                    education: t('education.title'),
-                    skills: t('skills.title'),
-                    programming: t('skills.programming'),
-                    design: t('skills.design'),
-                    experience: t('experience.title'),
-                    leadership: t('leadership.title'),
-                    certificates: t('certificates.title'),
-                  }}
-                />
+                {data && data.header ? (
+                  <PDFPreviewPanel
+                    data={data}
+                    labels={{
+                      preview: t('actions.preview'),
+                      education: t('education.title'),
+                      skills: t('skills.title'),
+                      programming: t('skills.programming'),
+                      design: t('skills.design'),
+                      experience: t('experience.title'),
+                      leadership: t('leadership.title'),
+                      certificates: t('certificates.title'),
+                    }}
+                  />
+                ) : (
+                  <div className="p-8 text-center text-[var(--color-text-muted)]">
+                    Loading preview data...
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

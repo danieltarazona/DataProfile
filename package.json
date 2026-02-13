@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:all": "pnpm exec wrangler pages dev --proxy 3000 --compatibility-date=2024-01-01 --compatibility-flags=nodejs_compat -- pnpm run dev",
+    "dev:all": "concurrently \"wrangler pages dev public --port 8788 --compatibility-date=2024-01-01 --compatibility-flags=nodejs_compat\" \"next dev --turbopack\"",
     "dev:turbo": "next dev --turbopack",
     "build": "next build --webpack",
     "start": "next start",
@@ -20,10 +20,11 @@
   },
   "dependencies": {
     "@datakit/react-core": "file:libs/datakit-react-core-latest.tgz",
-    "@react-pdf/renderer": "^4.3.2",
+    "@emotion/is-prop-valid": "^1.4.0",
     "@uiw/react-md-editor": "^4.0.11",
     "@xstate/react": "^6.0.0",
     "clsx": "^2.1.1",
+    "hono": "^4.4.7",
     "i18next": "^25.7.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "motion": "^12.26.2",
@@ -43,7 +44,14 @@
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
+    "vitest": "^2.0.0",
+    "concurrently": "^9.1.2",
     "wrangler": "^4.64.0"
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@10.29.3",
+  "pnpm": {
+    "overrides": {
+      "@react-pdf/renderer": "4.3.2"
+    }
+  }
 }

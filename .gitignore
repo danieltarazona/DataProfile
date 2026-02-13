@@ -6,6 +6,8 @@
 .DS_Store
 .wrangler/
 
+.pnpm-store/
+
 # dependencies
 /node_modules
 /.pnp

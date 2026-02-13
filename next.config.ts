@@ -10,9 +10,9 @@ const nextConfig: NextConfig = {
   },
 
   // Add trailing slashes for better compatibility
-  trailingSlash: true,
+  trailingSlash: false,
 
-  transpilePackages: ['@datakit/react-core'],
+  transpilePackages: ['@datakit/react-core', 'framer-motion'],
 
   serverExternalPackages: ['@react-pdf/renderer'],
 
@@ -29,6 +29,15 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:8788/api/:path*',
+      },
+    ];
   },
 
   turbopack: {},
