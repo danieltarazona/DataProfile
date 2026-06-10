@@ -1,2 +1,0 @@
-src/client/components/RoleComponents.tsx(9,5): error TS2300: Duplicate identifier 'onChange'.
-src/client/components/RoleComponents.tsx(10,5): error TS2300: Duplicate identifier 'onChange'.

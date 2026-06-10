@@ -1,0 +1,7 @@
+# ADMIN_EMAIL and ADMIN_PASSWORD are used for Cloudflare Login authentication.
+# In development, they are loaded from .dev.vars (gitignored) by the
+# @hono/vite-dev-server/cloudflare adapter.
+# In production, they are set via wrangler.toml [vars] or Cloudflare dashboard secrets.
+
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-password
