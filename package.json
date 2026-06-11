@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm run db:ensure && vite",
-    "dev:remote": "vite build --mode client && npx wrangler dev --remote",
+    "dev": "pnpm dev:remote",
+    "dev:local": "pnpm run db:ensure && vite",
+    "dev:remote": "CLOUDFLARE_API_TOKEN=$(keepassxc-cli show -s -a api_token $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_API' < /dev/tty) vite build --mode client && npx wrangler dev --remote",
     "db:ensure": "npx wrangler d1 execute datareactprofiled1 --local --file=./src/server/db/setup.sql",
     "db:ensure:remote": "npx wrangler d1 execute datareactprofiled1 --remote --file=./src/server/db/setup.sql",
     "db:push": "npx wrangler d1 export datareactprofiled1 --local --output=./db_sync.sql && npx wrangler d1 execute datareactprofiled1 --remote --file=./db_sync.sql",
@@ -25,10 +26,10 @@
     "preview": "npx wrangler dev --remote",
     "test": "vitest run",
     "upload": "git add . && git commit -m 'DataReactProfile' && git push origin main",
-    "sync:core": "CLOUDFLARE_ACCESS_CLIENT_ID='pass://DATA/Cloudflare_Access/client_id1' CLOUDFLARE_ACCESS_CLIENT_SECRET='pass://DATA/Cloudflare_Access/client_secret' pass-cli run -- deno run --allow-all ../scripts/sync-library.ts @datakit/react-core",
-    "sync:login": "CLOUDFLARE_ACCESS_CLIENT_ID='pass://DATA/Cloudflare_Access/client_id' CLOUDFLARE_ACCESS_CLIENT_SECRET='pass://DATA/Cloudflare_Access/client_secret' pass-cli run -- deno run --allow-all ../scripts/sync-library.ts @datakit/cloudflare-login",
+    "sync:core": "read -s -p 'KeePass Password: ' KPPASS < /dev/tty && echo && CLOUDFLARE_ACCESS_CLIENT_ID=$(echo $KPPASS | keepassxc-cli show -s -a client_id1 $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') CLOUDFLARE_ACCESS_CLIENT_SECRET=$(echo $KPPASS | keepassxc-cli show -s -a client_secret $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') deno run --allow-all ../scripts/sync-library.ts @datakit/react-core",
+    "sync:login": "read -s -p 'KeePass Password: ' KPPASS < /dev/tty && echo && CLOUDFLARE_ACCESS_CLIENT_ID=$(echo $KPPASS | keepassxc-cli show -s -a client_id $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') CLOUDFLARE_ACCESS_CLIENT_SECRET=$(echo $KPPASS | keepassxc-cli show -s -a client_secret $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') deno run --allow-all ../scripts/sync-library.ts @datakit/cloudflare-login",
     "sync:latest": "pnpm run sync:core && pnpm run sync:login",
-    "hash:password": "deno run DataKitCloudflareLogin/scripts/hash_password.ts"
+    "hash:password": "deno run ../scripts/hash_password.ts"
   },
   "dependencies": {
     "@datakit/cloudflare-login": "file:libs/datakit-cloudflare-login-latest.tgz",
