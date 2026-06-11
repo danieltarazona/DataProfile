@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm dev:remote",
     "dev:local": "pnpm run db:ensure && vite",
-    "dev:remote": "CLOUDFLARE_API_TOKEN=$(keepassxc-cli show -s -a api_token $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_API' < /dev/tty) vite build --mode client && npx wrangler dev --remote",
+    "dev:remote": "CLOUDFLARE_API_TOKEN=$(keepassxc-cli show -s -a api_token $KEEPASSXC_PASSWORDS 'Cloudflare_API' < /dev/tty) vite build --mode client && npx wrangler dev --remote",
     "db:ensure": "npx wrangler d1 execute datareactprofiled1 --local --file=./src/server/db/setup.sql",
     "db:ensure:remote": "npx wrangler d1 execute datareactprofiled1 --remote --file=./src/server/db/setup.sql",
     "db:push": "npx wrangler d1 export datareactprofiled1 --local --output=./db_sync.sql && npx wrangler d1 execute datareactprofiled1 --remote --file=./db_sync.sql",
