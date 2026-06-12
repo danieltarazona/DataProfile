@@ -25,6 +25,8 @@ export const header = sqliteTable('DataReactProfile_Header', {
     github: text('github').notNull().default(''),
     linkedin: text('linkedin').notNull().default(''),
     website: text('website').notNull().default(''),
+    aiPromptEnabled: integer('ai_prompt_enabled').notNull().default(0),
+    aiPromptColor: text('ai_prompt_color').notNull().default('#ffffff'),
     updatedAt: text('updated_at').notNull().default(''),
 });
 
@@ -210,14 +212,15 @@ export const sectionOrder = sqliteTable('DataReactProfile_SectionOrder', {
 // ─── Hobbies (NEW) ───────────────────────────────────────────
 export const hobbies = sqliteTable('DataReactProfile_Hobbies', {
     id: text('id').primaryKey(),
-    nameEn: text('nameEn').notNull().default(''),
-    nameEs: text('nameEs').notNull().default(''),
-    nameFr: text('nameFr').notNull().default(''),
-    descriptionEn: text('descriptionEn').notNull().default(''),
-    descriptionEs: text('descriptionEs').notNull().default(''),
-    descriptionFr: text('descriptionFr').notNull().default(''),
-    sortOrder: integer('sortOrder').notNull().default(0),
-    roleIds: text('roleIds').notNull().default('all'),
-    createdAt: text('createdAt').notNull().default(''),
-    updatedAt: text('updatedAt').notNull().default(''),
+    nameEn: text('name_en').notNull().default(''),
+    nameEs: text('name_es').notNull().default(''),
+    nameFr: text('name_fr').notNull().default(''),
+    descriptionEn: text('description_en').notNull().default(''),
+    descriptionEs: text('description_es').notNull().default(''),
+    descriptionFr: text('description_fr').notNull().default(''),
+    sortOrder: integer('sort_order').notNull().default(0),
+    roleIds: text('role_ids').notNull().default('all'),
+    createdAt: text('created_at').notNull().default(''),
+    updatedAt: text('updated_at').notNull().default(''),
 });
+

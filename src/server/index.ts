@@ -96,8 +96,8 @@ app.get('/api/cv/all', async (c) => {
             sectionOrder: sectionOrderData,
         })
     } catch (err: any) {
-        if (err.message?.includes('no such table')) {
-            console.log('Tables missing, triggering auto-migration...')
+        if (err.message?.includes('no such table') || err.message?.includes('no such column') || err.message?.includes('has no column')) {
+            console.log('Schema mismatch detected, triggering auto-migration...', err.message)
             // Run migration
             const migrationStatements = MIGRATION_SQL.split(';').map(s => s.trim()).filter(Boolean)
             for (const stmt of migrationStatements) {
@@ -152,8 +152,44 @@ app.delete('/api/cv/roles/:id', async (c) => {
 app.put('/api/cv/header', async (c) => {
     const db = drizzle(c.env.DB)
     const body = await c.req.json()
-    await db.update(schema.header).set({ ...body, updatedAt: now() }).where(eq(schema.header.id, 'default'))
-    return c.json({ success: true })
+    
+    try {
+        const headerRows = await db.select().from(schema.header).limit(1)
+        const headerId = headerRows[0]?.id || 'default'
+        
+        if (headerRows.length === 0) {
+            await db.insert(schema.header).values({ id: headerId, ...body, updatedAt: now() })
+        } else {
+            const { id, ...updateData } = body
+            await db.update(schema.header).set({ ...updateData, updatedAt: now() }).where(eq(schema.header.id, headerId))
+        }
+        return c.json({ success: true })
+    } catch (err: any) {
+        if (err.message?.includes('no such table') || err.message?.includes('no such column') || err.message?.includes('has no column')) {
+            console.log('Schema mismatch detected on Header PUT, triggering auto-migration...', err.message)
+            // Run migrations
+            const migrationStatements = MIGRATION_SQL.split(';').map(s => s.trim()).filter(Boolean)
+            for (const stmt of migrationStatements) {
+                await c.env.DB.prepare(stmt).run()
+            }
+            // Run column migrations
+            for (const stmt of COLUMN_MIGRATIONS) {
+                try { await c.env.DB.prepare(stmt).run() } catch(_) { /* OK */ }
+            }
+            // Retry the update
+            const headerRows = await db.select().from(schema.header).limit(1)
+            const headerId = headerRows[0]?.id || 'default'
+            if (headerRows.length === 0) {
+                await db.insert(schema.header).values({ id: headerId, ...body, updatedAt: now() })
+            } else {
+                const { id, ...updateData } = body
+                await db.update(schema.header).set({ ...updateData, updatedAt: now() }).where(eq(schema.header.id, headerId))
+            }
+            return c.json({ success: true })
+        }
+        console.error('API Error on Header PUT:', err)
+        return c.json({ error: err.message }, 500)
+    }
 })
 
 // ─── Generic section CRUD ────────────────────────────────────

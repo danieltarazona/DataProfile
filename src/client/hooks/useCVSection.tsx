@@ -34,7 +34,7 @@ export function useCVSection(section: keyof api.FullCVData, send: any, currentDa
     const updateEntry = useCallback(async (id: string, field: string, value: any) => {
         try {
             send({ type: 'UPDATE_ENTRY', section, id, field, value });
-            await api.updateEntry(section, id, { [field]: value });
+            api.debouncedUpdateEntry(section as string, id, field, value);
         } catch (err) {
             console.error(`Error updating ${section} ${id}:`, err);
             await fetchLatest();

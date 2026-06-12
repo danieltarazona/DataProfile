@@ -46,6 +46,8 @@ export function mapCVDataToPreview(data: api.FullCVData, activeRoleId: string, l
             github: data.header.github,
             linkedin: data.header.linkedin || '',
             website: data.header.website || '',
+            aiPromptEnabled: data.header.aiPromptEnabled,
+            aiPromptColor: data.header.aiPromptColor,
         },
         education: visibleSections.includes('education')
             ? (data.education || []).filter(isVisible).map(it => ({

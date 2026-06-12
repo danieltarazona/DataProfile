@@ -41,6 +41,15 @@ export default defineConfig(({ mode }) => {
                 },
                 dedupe: ['xstate', '@xstate/react', 'react', 'react-dom'],
             },
+            server: {
+                port: 5173,
+                proxy: {
+                    '/api': {
+                        target: 'http://localhost:8787',
+                        changeOrigin: true,
+                    }
+                }
+            },
             optimizeDeps: {
                 exclude: ['@datakit/cloudflare-login'],
             },

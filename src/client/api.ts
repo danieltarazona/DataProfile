@@ -18,6 +18,8 @@ export interface CVHeaderData {
     locationEn: string; locationEs: string; locationFr: string;
     email: string; phone: string; github: string;
     linkedin: string; website: string;
+    aiPromptEnabled: number;
+    aiPromptColor: string;
 }
 
 export interface CVEntry {
@@ -146,11 +148,73 @@ export async function runMigration(): Promise<void> {
 
 // ─── Helper: get localized field ─────────────────────────────
 export function getLocalizedField(entry: Record<string, any>, field: string, lang: string): string {
-    const suffix = lang === 'en' ? 'En' : lang === 'es' ? 'Es' : 'Fr';
+    const cleanLang = (lang || 'en').slice(0, 2).toLowerCase();
+    const suffix = cleanLang === 'en' ? 'En' : cleanLang === 'es' ? 'Es' : 'Fr';
     return entry[`${field}${suffix}`] || entry[`${field}En`] || '';
 }
 
 export function setLocalizedField(field: string, lang: string): string {
-    const suffix = lang === 'en' ? 'En' : lang === 'es' ? 'Es' : 'Fr';
+    const cleanLang = (lang || 'en').slice(0, 2).toLowerCase();
+    const suffix = cleanLang === 'en' ? 'En' : cleanLang === 'es' ? 'Es' : 'Fr';
     return `${field}${suffix}`;
+}
+
+// ─── Debounced Updates ────────────────────────────────────────
+const pendingEntryUpdates: Record<string, Record<string, any>> = {};
+const entryDebounceTimers: Record<string, any> = {};
+
+export function debouncedUpdateEntry(
+    section: string,
+    id: string,
+    field: string,
+    value: any,
+    onSuccess?: () => void
+): void {
+    const key = `${section}:${id}`;
+    if (!pendingEntryUpdates[key]) {
+        pendingEntryUpdates[key] = {};
+    }
+    pendingEntryUpdates[key][field] = value;
+
+    if (entryDebounceTimers[key]) {
+        clearTimeout(entryDebounceTimers[key]);
+    }
+
+    entryDebounceTimers[key] = setTimeout(async () => {
+        const updates = { ...pendingEntryUpdates[key] };
+        delete pendingEntryUpdates[key];
+        delete entryDebounceTimers[key];
+        try {
+            await updateEntry(section, id, updates);
+            if (onSuccess) onSuccess();
+        } catch (err) {
+            console.error(`Debounced update failed for ${key}:`, err);
+        }
+    }, 600);
+}
+
+let pendingHeaderUpdates: Record<string, any> = {};
+let headerDebounceTimer: any = null;
+
+export function debouncedUpdateHeader(
+    updates: Record<string, any>,
+    onSuccess?: () => void
+): void {
+    pendingHeaderUpdates = { ...pendingHeaderUpdates, ...updates };
+
+    if (headerDebounceTimer) {
+        clearTimeout(headerDebounceTimer);
+    }
+
+    headerDebounceTimer = setTimeout(async () => {
+        const finalUpdates = { ...pendingHeaderUpdates };
+        pendingHeaderUpdates = {};
+        headerDebounceTimer = null;
+        try {
+            await updateHeader(finalUpdates);
+            if (onSuccess) onSuccess();
+        } catch (err) {
+            console.error('Debounced header update failed:', err);
+        }
+    }, 600);
 }

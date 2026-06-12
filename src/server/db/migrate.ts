@@ -18,16 +18,16 @@ CREATE TABLE IF NOT EXISTS DataReactProfile_Roles (
 -- Hobbies (NEW)
 CREATE TABLE IF NOT EXISTS DataReactProfile_Hobbies (
     id TEXT PRIMARY KEY,
-    nameEn TEXT NOT NULL DEFAULT '',
-    nameEs TEXT NOT NULL DEFAULT '',
-    nameFr TEXT NOT NULL DEFAULT '',
-    descriptionEn TEXT NOT NULL DEFAULT '',
-    descriptionEs TEXT NOT NULL DEFAULT '',
-    descriptionFr TEXT NOT NULL DEFAULT '',
-    sortOrder INTEGER NOT NULL DEFAULT 0,
-    roleIds TEXT NOT NULL DEFAULT 'all',
-    createdAt TEXT NOT NULL DEFAULT '',
-    updatedAt TEXT NOT NULL DEFAULT ''
+    name_en TEXT NOT NULL DEFAULT '',
+    name_es TEXT NOT NULL DEFAULT '',
+    name_fr TEXT NOT NULL DEFAULT '',
+    description_en TEXT NOT NULL DEFAULT '',
+    description_es TEXT NOT NULL DEFAULT '',
+    description_fr TEXT NOT NULL DEFAULT '',
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    role_ids TEXT NOT NULL DEFAULT 'all',
+    created_at TEXT NOT NULL DEFAULT '',
+    updated_at TEXT NOT NULL DEFAULT ''
 );
 
 -- Header
@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS DataReactProfile_Header (
     github TEXT NOT NULL DEFAULT '',
     linkedin TEXT NOT NULL DEFAULT '',
     website TEXT NOT NULL DEFAULT '',
+    ai_prompt_enabled INTEGER NOT NULL DEFAULT 0,
+    ai_prompt_color TEXT NOT NULL DEFAULT '#ffffff',
     updated_at TEXT NOT NULL DEFAULT ''
 );
 
@@ -273,4 +275,6 @@ INSERT OR IGNORE INTO DataReactProfile_SectionOrder (id, section_key, sort_order
 export const COLUMN_MIGRATIONS: string[] = [
     "ALTER TABLE DataReactProfile_Header ADD COLUMN linkedin TEXT NOT NULL DEFAULT ''",
     "ALTER TABLE DataReactProfile_Header ADD COLUMN website TEXT NOT NULL DEFAULT ''",
+    "ALTER TABLE DataReactProfile_Header ADD COLUMN ai_prompt_enabled INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE DataReactProfile_Header ADD COLUMN ai_prompt_color TEXT NOT NULL DEFAULT '#ffffff'",
 ];
