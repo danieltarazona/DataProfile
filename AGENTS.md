@@ -1,115 +1,175 @@
-# AGENTS.md — Agent & Developer Guide for data-next-gen-profile
+# AGENTS.md — DataReactProfile
 
-Welcome! This guide provides necessary architectural context, development commands, coding standards, and operational guidelines for both AI agents and human developers working on data-next-gen-profile.
+> Onboarding and operational guide for AI agents and developers working on the DataReactProfile CV management application.
 
 ---
 
-## Project Overview
+## 1. Mission
 
-* **Purpose**: A Cloudflare Workers (Hono) + React (Vite) app for CV data management, offering multi-role and trilingual support.
-* **Core Technologies**: Node.js, TypeScript
-* **High-Level relationships**: [Describe how main layers/components relate to each other]
+Provide the **trilingual, multi-role CV data editor and PDF compiler**. The application is built with a Cloudflare Worker Hono backend, a SQLite D1 database (via Drizzle ORM), and a Vite React frontend backed by XState. It allows the admin to edit personal details, career experiences, skills, and awards, instantly rendering matching PDF previews in Harvard/DATA formats.
 
-## Architecture
+---
 
-* **Pattern**: Cloudflare Worker + D1 (SQLite) + React frontend with XState.
-* **Design Principles**: State machines (XState), trilingual support, D1 SQLite database, PDF generation.
+## 2. Repository Overview
 
-## Repository Layout
+| Field | Value |
+|---|---|
+| **Package** | `data-next-gen-profile` |
+| **Private** | `true` |
+| **Backend** | Hono running on Cloudflare Workers |
+| **Frontend** | Vite + React + TypeScript + Tailwind |
+| **Database** | Cloudflare D1 (SQLite) with Drizzle ORM |
+| **State Machine** | XState v5 (`cvMachine.ts`) |
 
-Below is the high-level layout of the repository:
+---
 
-* [.agent/](file:///Users/data/Projects/DataKitJS/DataReactProfile/.agent) - [Directory] Project subdirectory containing source code or assets.
-* [.dev.vars](file:///Users/data/Projects/DataKitJS/DataReactProfile/.dev.vars) - [File] Project configuration or source file.
-* [.dev.vars.example](file:///Users/data/Projects/DataKitJS/DataReactProfile/.dev.vars.example) - [File] Project configuration or source file.
-* [.gemini/](file:///Users/data/Projects/DataKitJS/DataReactProfile/.gemini) - [Directory] Project subdirectory containing source code or assets.
-* [.gitattributes](file:///Users/data/Projects/DataKitJS/DataReactProfile/.gitattributes) - [File] Project configuration or source file.
-* [.gitignore](file:///Users/data/Projects/DataKitJS/DataReactProfile/.gitignore) - [File] Git ignore file lists directories/files to exclude from version control.
-* [.node-version](file:///Users/data/Projects/DataKitJS/DataReactProfile/.node-version) - [File] Project configuration or source file.
-* [.npmrc](file:///Users/data/Projects/DataKitJS/DataReactProfile/.npmrc) - [File] Project configuration or source file.
-* [.wrangler/](file:///Users/data/Projects/DataKitJS/DataReactProfile/.wrangler) - [Directory] Project subdirectory containing source code or assets.
-* [README.md](file:///Users/data/Projects/DataKitJS/DataReactProfile/README.md) - [File] General project overview and human-developer documentation.
-* [build_test.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/build_test.sh) - [File] Project configuration or source file.
-* [cv_text.txt](file:///Users/data/Projects/DataKitJS/DataReactProfile/cv_text.txt) - [File] Project configuration or source file.
-* [eslint.config.mjs](file:///Users/data/Projects/DataKitJS/DataReactProfile/eslint.config.mjs) - [File] Project configuration or source file.
-* [extract.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/extract.sh) - [File] Project configuration or source file.
-* [index.html](file:///Users/data/Projects/DataKitJS/DataReactProfile/index.html) - [File] Project configuration or source file.
-* [libs/](file:///Users/data/Projects/DataKitJS/DataReactProfile/libs) - [Directory] Project subdirectory containing source code or assets.
-* [migration.sql](file:///Users/data/Projects/DataKitJS/DataReactProfile/migration.sql) - [File] Project configuration or source file.
-* [package.json](file:///Users/data/Projects/DataKitJS/DataReactProfile/package.json) - [File] Project dependencies and npm/pnpm script definitions.
-* [pnpm-lock.yaml](file:///Users/data/Projects/DataKitJS/DataReactProfile/pnpm-lock.yaml) - [File] Locked version requirements for node dependencies.
-* [pnpm-workspace.yaml](file:///Users/data/Projects/DataKitJS/DataReactProfile/pnpm-workspace.yaml) - [File] Project configuration or source file.
-* [postcss.config.mjs](file:///Users/data/Projects/DataKitJS/DataReactProfile/postcss.config.mjs) - [File] Project configuration or source file.
-* [public/](file:///Users/data/Projects/DataKitJS/DataReactProfile/public) - [Directory] Project subdirectory containing source code or assets.
-* [rebuild_core.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/rebuild_core.sh) - [File] Project configuration or source file.
-* [run_dev.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/run_dev.sh) - [File] Project configuration or source file.
-* [scripts/](file:///Users/data/Projects/DataKitJS/DataReactProfile/scripts) - [Directory] Project subdirectory containing source code or assets.
-* [setup_wsl.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/setup_wsl.sh) - [File] Project configuration or source file.
-* [src/](file:///Users/data/Projects/DataKitJS/DataReactProfile/src) - [Directory] Project subdirectory containing source code or assets.
-* [temp_setup.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/temp_setup.sh) - [File] Project configuration or source file.
-* [test_login.sh](file:///Users/data/Projects/DataKitJS/DataReactProfile/test_login.sh) - [File] Project configuration or source file.
-* [tmp_query.sql](file:///Users/data/Projects/DataKitJS/DataReactProfile/tmp_query.sql) - [File] Project configuration or source file.
-* [tsconfig.json](file:///Users/data/Projects/DataKitJS/DataReactProfile/tsconfig.json) - [File] TypeScript compiler configuration.
-* [tsconfig.node.json](file:///Users/data/Projects/DataKitJS/DataReactProfile/tsconfig.node.json) - [File] Project configuration or source file.
-* [vite.config.ts](file:///Users/data/Projects/DataKitJS/DataReactProfile/vite.config.ts) - [File] Vite bundler and dev-server configuration.
-* [wrangler.toml](file:///Users/data/Projects/DataKitJS/DataReactProfile/wrangler.toml) - [File] Cloudflare Wrangler configuration for deployment.
+## 3. Technology Stack
 
-## Development Commands
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Server Framework** | Hono | Backend endpoints & static assets server |
+| **Database ORM** | Drizzle ORM | SQLite DB schemas and query model |
+| **Client UI** | React 18, Tailwind CSS | Profile editor layout, input panels, previews |
+| **Client State** | XState, `@xstate/react` | Unified CV data structure and transition engine |
+| **PDF Renderer** | `@react-pdf/renderer` | Client-side Harvard & DATA PDF compilation |
+| **Localizer** | `i18next`, `react-i18next` | English, Spanish, and French translation keys |
+| **Testing** | Vitest | Integration test suites |
 
-Use the following commands during development:
+---
 
-* **Build**: `pnpm run build`
-* **Run Locally**: `pnpm run dev`
-* **Linting**: `None configured`
-* **Formatting**: `None configured`
+## 4. Architecture Overview
 
-## Testing Strategy
+```
+┌─────────────────────────────────────────────────────────────┐
+│                       DataReactProfile                      │
+│                                                             │
+│  Client (React)                  Server (Hono)              │
+│  ┌────────────────────┐          ┌────────────────────────┐ │
+│  │   cvMachine        │──HTTP───►│ API Endpoints          │ │
+│  │  - CV memory state │  (600ms  │  - /api/cv             │ │
+│  │                    │  debounced) - /api/cv/entry       │ │
+│  │   BlobProvider     │          │                        │ │
+│  │  - PDF compiler    │          │ Drizzle ORM & D1       │ │
+│  │                    │          │  - Setup/Migrate       │ │
+│  │   i18next          │          │  - Self-healing catch  │ │
+│  └────────────────────┘          └────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
 
-* **Execution**: `pnpm test`
-* **Framework**: Vitest
-* **Structure**: Next to implementation files
+### Database Architecture
+- **Column Naming Conventions**: All SQLite column names **must** use `snake_case`. Drizzle schema properties **must** use `camelCase` mapped explicitly:
+  ```typescript
+  export const experience = sqliteTable('DataReactProfile_Experience', {
+      id: text('id').primaryKey(),
+      companyName: text('company_name').notNull().default(''),
+      sortOrder: integer('sort_order').notNull().default(0),
+  });
+  ```
+- **Auto-Migration Pipeline**: The Hono server catches missing table/column errors, automatically executes queries in `MIGRATION_SQL` / `COLUMN_MIGRATIONS` inside `src/server/db/migrate.ts`, and redirects the client back to the requested endpoint.
 
-## Deployment Process
+### Client-side state & Writes
+- **Debounced Updates**: To prevent SQLite lock conflicts, the client never writes to the database on every keystroke. It dispatches edits instantly to `cvMachine` for UI responsiveness, but queues database updates through `debouncedUpdateEntry` / `debouncedUpdateHeader` (`client/api.ts`) which triggers a single write call after a 600ms idle period.
+- **Draggable PDF Preview**: The PDF preview width is tracked in `Home.tsx` (`previewWidth` state) and persisted in `localStorage`.
 
-* **Pipelines**:
-* Local and manual deploy workflows via npm scripts / wrangler.
-* **Deployment Step**: Deployed to Cloudflare Workers/D1 using wrangler deploy.
+---
 
-## Coding Standards
+## 5. Repository Structure
 
-* **Conventions**: [e.g., Use TypeScript strict-mode, prefer functional programming, write inline JSDoc, follow PEP 8]
-* **Error-Handling**: [e.g., Do not throw generic Errors; use custom DomainError classes; use try/catch blocks only at boundaries]
-* **Documentation**: [e.g., Keep README up-to-date, document all public interfaces, include example code blocks in docstrings]
+```
+DataReactProfile/
+├── src/
+│   ├── client/
+│   │   ├── components/     # UI Editor components (Sections, Fields, PDFPanel)
+│   │   ├── hooks/          # React hook abstractions
+│   │   ├── pages/          # Home, Login view layout
+│   │   ├── api.ts          # Axios client, debounce queue controllers
+│   │   └── App.tsx         # Context providers wrapper
+│   ├── lib/
+│   │   ├── cvMachine.ts    # XState CV builder state logic
+│   │   ├── i18n.ts         # i18next locales setup
+│   │   └── *.test.ts       # Vitest spec suites
+│   ├── server/
+│   │   ├── db/
+│   │   │   ├── schema.ts   # Drizzle schema definitions
+│   │   │   ├── setup.sql   # Raw SQLite structures
+│   │   │   └── migrate.ts  # Self-healing migration pipelines
+│   │   └── index.ts        # Hono router and error-catcher middleware
+│   └── locales/            # Localization dictionary files (en, es, fr)
+├── wrangler.toml           # Wrangler Worker deployment settings
+├── vite.config.ts          # Bundler setups
+├── package.json            # Scripts & dependencies
+└── tsconfig.json           # Compiler rules
+```
 
-## Tooling
+---
 
-Here are the configuration files managing tools and styles in the repository:
+## 6. Development Workflow
 
-* [tsconfig.json](file:///Users/data/Projects/DataKitJS/DataReactProfile/tsconfig.json): TypeScript compiler configuration
-* [vite.config.ts](file:///Users/data/Projects/DataKitJS/DataReactProfile/vite.config.ts): Vite dev server and bundler configuration
+### Scripts
 
-## Agent Operating Instructions
+Use the following commands inside `DataReactProfile/`:
 
-Agents must follow these rules when editing the repository:
-1. **Understand Layout**: Prior to making changes, inspect the files in [Repository Layout](#repository-layout).
-2. **Review Configs**: Review dependency files (e.g. `package.json`, `Cargo.toml`) to avoid duplication.
-3. **Run Checks**: Always run formatting, linting, and tests after making modifications.
-4. **Preserve Comments**: Maintain all existing codebase documentation and comment conventions.
-5. **Report Outcomes**: Provide exact commands run and execution logs in your final summaries.
+- **Run Local Dev Server (Local D1 emulator)**:
+  ```bash
+  pnpm run dev:local
+  ```
 
-## Contribution Workflow
+- **Run Dev Server (Remote Cloud D1 database)**:
+  ```bash
+  pnpm run dev
+  ```
+  Uses KeePassXC credentials securely.
 
-1. **Branching**: Create feature branches off the main branch (e.g., `feature/add-agents-md`).
-2. **Commits**: Follow conventional commit formats (e.g., `feat: add agents-md skill`, `fix: resolve compile error`).
-3. **Pull Requests**: Ensure all lint checks and test suites pass locally before submitting a PR.
+- **Export Remote D1 DB**:
+  ```bash
+  pnpm run db:backup
+  ```
 
-## Troubleshooting
+- **Deploy DB Schema**:
+  ```bash
+  pnpm run db:deploy
+  ```
+  Deploys schema definitions to the Cloud environment.
 
-* **Build Issues**: [Explain typical resolution for build failures, e.g. clean build cache, run clean dependency install]
-* **Common Errors**: [List typical errors developer/agents might hit and how to fix them]
+- **Run Tests**:
+  ```bash
+  pnpm test
+  ```
 
-## Repository-Specific Knowledge
+---
 
-* **Frequently Modified Areas**: [Identify files/folders that change often]
-* **Known Limitations**: [List any design bottlenecks or known technical debt]
-* **Architectural Decisions**: [Highlight historic decisions or architectural compromises that shape development]
+## 7. Working Agreement
+
+- **Drizzle Mapping**: Maintain exact mapping: `snake_case` in SQLite database, `camelCase` in Drizzle code.
+- **Debounced network writes**: Do not bypass debounced API functions when writing data fields.
+- **Auto-Migrate rules**: Append new migrations to `migrate.ts` arrays (`MIGRATION_SQL` or `COLUMN_MIGRATIONS`) rather than altering setup.sql scripts directly.
+
+---
+
+## 8. Security Guidelines
+
+### KeePassXC Integration
+- Secrets (tokens, access keys) are never stored in plaintext.
+- Dev scripts use `keepassxc-cli` to prompt for master passwords on `/dev/tty` and extract tokens securely.
+
+---
+
+## 9. Testing Expectations
+
+- Co-located testing uses Vitest.
+- Run `pnpm test` to validate context structures, actions, and API endpoints before deploying.
+
+---
+
+## 10. Repository-Specific Rules
+
+1. **Trilingual translation paths**: When adding text fields, supply translation keys for English (`en.json`), Spanish (`es.json`), and French (`fr.json`).
+2. **BlobProvider scoping**: Keep the React-PDF `BlobProvider` scope elevated at the root of `Home.tsx` to optimize layout compilations.
+
+---
+
+## 11. Forbidden Actions
+
+1. **Do NOT** bypass the debounce queue for client keystroke inputs.
+2. **Do NOT** write Drizzle schema properties in `snake_case`.
+3. **Do NOT** commit `.env` or `.dev.vars` files containing cloud tokens.
