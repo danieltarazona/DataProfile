@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "pnpm dev:remote",
     "dev:local": "pnpm run db:ensure && vite",
