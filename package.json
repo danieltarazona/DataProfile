@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm dev:remote",
     "dev:local": "pnpm run db:ensure && vite",
-    "dev:remote": "export CLOUDFLARE_API_TOKEN=$(keepassxc-cli show -s -a api_token $KEEPASSXC_PASSWORDS 'Cloudflare_API' < /dev/tty) && vite build --mode client && concurrently \"vite --mode client\" \"npx wrangler dev --remote --port 8787\"",
+    "dev:remote": "read -s -p 'KeePass Password: ' KPPASS < /dev/tty && echo && export CLOUDFLARE_API_TOKEN=$(echo $KPPASS | keepassxc-cli show -s -a api_token $KEEPASSXC_PASSWORDS 'Cloudflare_API') && vite build --mode client && concurrently \"vite --mode client\" \"npx wrangler dev --remote --port 8787\"",
     "db:ensure": "npx wrangler d1 execute datareactprofiled1 --local --file=./src/server/db/setup.sql",
     "db:ensure:remote": "npx wrangler d1 execute datareactprofiled1 --remote --file=./src/server/db/setup.sql",
     "db:push": "npx wrangler d1 export datareactprofiled1 --local --output=./db_sync.sql && npx wrangler d1 execute datareactprofiled1 --remote --file=./db_sync.sql",
@@ -42,7 +42,7 @@
     "@xstate/react": "^6.0.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
-    "hono": "4.12.21",
+    "hono": "4.12.25",
     "i18next": "^25.7.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "js-yaml": "^4.1.1",

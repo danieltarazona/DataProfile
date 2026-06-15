@@ -2,7 +2,7 @@
 
 ## Environment
 - OS: Windows (Client) / WSL Ubuntu (Worker)
-- Workspace Path: `/home/data/Projects/DataKitReact/DataReactProfile` (WSL)
+- Workspace Path: `/Users/data/Projects/DataJS/DataProfile` (Mac) / `/home/data/Projects/DataKitReact/DataReactProfile` (WSL)
 - Command Tooling: `pnpm`
 - Database: Cloudflare D1 (Local & Remote)
 

@@ -276,6 +276,7 @@ export default function Home() {
                     setAuthTimedOut(false);
                 }} 
                 defaultEmail={defaultEmail}
+                labels={{ systemName: 'DATA PROFILE' }}
             />
         </div>
     );
