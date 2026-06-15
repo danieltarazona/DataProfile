@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './globals.css'
 import '@datakit/react-core/styles.css'
+import '@datakit/cloudflare-login/styles.css'
 import '@/lib/i18n'
 
 // Global error handler for debugging "black screens"
