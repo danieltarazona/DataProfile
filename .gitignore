@@ -52,3 +52,7 @@ db_sync.sql
 backups/
 cv_text.txt
 src/server/db/seed_from_pdf.sql
+
+# @datakit/react-core is provided via Cloudflare service binding (remote)
+# and from libs/ for local dev; the tarball is a regenerated artifact.
+datakit-react-core-latest.tgz

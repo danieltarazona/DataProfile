@@ -273,8 +273,8 @@ packages:
     engines: {node: '>=12'}
 
   '@datakit/cloudflare-login@file:libs/datakit-cloudflare-login-latest.tgz':
-    resolution: {integrity: sha512-QbtdoUM6wTVRtK4AdufxCFgwoaHKGunMRE85K0T+mTyV6+ogWDq1dSuTeFtBSc2Mor2hm4zpc942/A+y5DIlrQ==, tarball: file:libs/datakit-cloudflare-login-latest.tgz}
-    version: 1.2.0
+    resolution: {integrity: sha512-EmywM2/BTxGCtUarSmA+MCPsXhD+DTW3Rc8i6Jf8ybH/xLDCH/hc63T8Mm7pmclK7ow7PyJroacEUDsI59gHTw==, tarball: file:libs/datakit-cloudflare-login-latest.tgz}
+    version: 1.4.0
     peerDependencies:
       '@xstate/react': ^6.0.0
       react: '>=18.0.0'
