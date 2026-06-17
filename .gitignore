@@ -56,3 +56,6 @@ src/server/db/seed_from_pdf.sql
 # @datakit/react-core is provided via Cloudflare service binding (remote)
 # and from libs/ for local dev; the tarball is a regenerated artifact.
 datakit-react-core-latest.tgz
+
+# @datakit tarball — regenerated artifact (service binding in remote, libs/ in local)
+datakit-cloudflare-login-latest.tgz
