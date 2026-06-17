@@ -11,10 +11,6 @@ database_id = "1aafe2b0-0b8e-477d-b2b7-21866e8246ae"
 directory = "./dist"
 binding = "ASSETS"
 
-[vars]
-ADMIN_EMAIL = "PLACEHOLDER"
-ADMIN_PASSWORD = "PLACEHOLDER"
-
 [observability]
 enabled = false
 head_sampling_rate = 1

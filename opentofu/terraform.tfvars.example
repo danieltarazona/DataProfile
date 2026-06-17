@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (gitignored) or export TF_VAR_* from KeePassXC.
+#   source ../../scripts/tf-env.zsh
+
+cloudflare_api_token  = "API_KEY_HERE"
+cloudflare_account_id = "ACCOUNT_ID_HERE"
+
+# Admin secrets are set via wrangler, not here:
+#   wrangler secret put ADMIN_EMAIL
+#   wrangler secret put ADMIN_PASSWORD     # hash via deno run ../scripts/hash_password.ts
+
+# Keep the legacy DB name to adopt the existing data in place (Option A):
+# d1_database_name = "datareactprofiled1"
+
+# Enable edge Zero Trust:
+# zero_trust_domain     = "profile.example.com"
+# zone_id               = "ZONE_ID_HERE"
+# access_allowed_emails = ["you@example.com"]
