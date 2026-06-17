@@ -24,6 +24,8 @@
     "db:backup:local": "mkdir -p backups && npx wrangler d1 export datareactprofiled1 --local --output=./backups/local_backup_$(date +%Y%m%d_%H%M%S).sql",
     "db:seed:initial": "npx wrangler d1 execute datareactprofiled1 --local --file=./src/server/db/seed.sql",
     "db:deploy": "mkdir -p backups && echo 'Backing up local...' && pnpm run db:backup:local && echo 'Backing up remote...' && npx wrangler d1 export datareactprofiled1 --remote --output=./backups/remote_before_deploy_$(date +%Y%m%d_%H%M%S).sql && echo 'Exporting local state...' && npx wrangler d1 export datareactprofiled1 --local --output=./deploy_tmp.sql && echo 'Adjusting SQL for sync...' && sed -i 's/CREATE TABLE /CREATE TABLE IF NOT EXISTS /g' ./deploy_tmp.sql && sed -i 's/INSERT INTO /INSERT OR REPLACE INTO /g' ./deploy_tmp.sql && echo 'Deploying to cloud...' && npx wrangler d1 execute datareactprofiled1 --remote --file=./deploy_tmp.sql && rm ./deploy_tmp.sql && echo 'Done!'",
+    "registry:prefetch": "deno run --allow-all ../scripts/registry-prefetch.ts @datakit/react-core",
+    "prebuild": "pnpm run registry:prefetch && pnpm install --no-frozen-lockfile --prefer-offline",
     "build": "vite build --mode client && vite build",
     "preview": "npx wrangler dev --remote",
     "test": "vitest run",
