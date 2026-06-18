@@ -1,0 +1,8 @@
+# Standalone pnpm root for the Pulumi program. Without this, the parent project's
+# pnpm-workspace.yaml captures this directory and `pnpm install` (including the
+# one Pulumi runs on `pulumi up`) becomes a no-op, so the @pulumi/* deps never
+# install. This marker stops pnpm's upward walk.
+packages:
+  - .
+allowBuilds:
+  protobufjs: true

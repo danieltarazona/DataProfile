@@ -1,0 +1,20 @@
+{
+  "_comment": [
+    "Adopt the EXISTING live D1 database (datareactprofiled1) into Pulumi state so",
+    "`pulumi up` does not create a new empty one. Its id lives in ../wrangler.toml.",
+    "",
+    "  sed \"s/ACCOUNT_ID_HERE/$CLOUDFLARE_ACCOUNT_ID/g\" import.json.example > import.json",
+    "  pulumi import -f import.json --yes",
+    "  rm import.json",
+    "",
+    "The Access policy/app/custom-domain are NOT here: they only exist once",
+    "zeroTrustDomain is set, so `pulumi up` creates them fresh."
+  ],
+  "resources": [
+    {
+      "type": "cloudflare:index/d1Database:D1Database",
+      "name": "database",
+      "id": "ACCOUNT_ID_HERE/1aafe2b0-0b8e-477d-b2b7-21866e8246ae"
+    }
+  ]
+}

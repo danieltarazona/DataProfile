@@ -1,0 +1,14 @@
+# Non-sensitive tunables. Cloudflare API token + account id come from the
+# environment (KeePassXC): CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.
+config:
+  dataprofile-cloudflare:workerName: dataprofile
+  # LIVE D1 name (predates the <project>d1 convention). Keep as-is so import
+  # adopts the existing database instead of creating an empty "dataprofiled1".
+  dataprofile-cloudflare:d1DatabaseName: datareactprofiled1
+  dataprofile-cloudflare:accessPolicyName: dataprofile-admins
+  dataprofile-cloudflare:accessAppName: DataProfile Admin
+  # Set both to protect the admin panel/API at the edge. Leave "" to defer.
+  dataprofile-cloudflare:zeroTrustDomain: ""
+  dataprofile-cloudflare:zoneId: ""
+  # MUST be non-empty before enabling zeroTrustDomain (an allow policy needs an identity).
+  dataprofile-cloudflare:accessAllowedEmails: []

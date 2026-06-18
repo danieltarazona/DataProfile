@@ -1,0 +1,10 @@
+name: dataprofile-cloudflare
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+    packagemanager: pnpm
+description: >-
+  Durable Cloudflare infrastructure for DataProfile: a D1 database (multi-language
+  résumé/profile content) and edge Zero Trust Access over the admin panel/API
+  (custom domain only). The Worker + its bindings are owned by wrangler.
