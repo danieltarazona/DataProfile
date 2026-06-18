@@ -1,0 +1,11 @@
+# Pulumi (TypeScript)
+node_modules/
+bin/
+.pulumi/
+# Pulumi.<stack>.yaml se commitea (config). Nunca un *.local.yaml con secretos.
+Pulumi.*.local.yaml
+# Generado desde import.json.example con el account id real.
+import.json
+# Salida de cf-audit + backups del traslado de valores.
+audit/
+*.bak

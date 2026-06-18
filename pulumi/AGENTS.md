@@ -1,7 +1,7 @@
 # DataProfile — Pulumi Infrastructure
 
 Durable Cloudflare infra for DataProfile, as a **Pulumi (TypeScript)** program
-(replaced OpenTofu; `*.tf` kept as legacy reference). The Worker script + its
+(replaced OpenTofu; `*.tf` now in ../terraform/). The Worker script + its
 bindings (D1, registry service binding, admin secrets) stay owned by
 `../wrangler.toml`.
 
@@ -21,7 +21,7 @@ bindings (D1, registry service binding, admin secrets) stay owned by
 ## Setup (adopt the existing D1, then converge)
 
 ```zsh
-cd DataProfile/cloudflare && pnpm install
+cd DataProfile/pulumi && pnpm install
 pulumi login --local && export PULUMI_CONFIG_PASSPHRASE='…'
 pulumi stack init prod
 # export CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID from KeePassXC

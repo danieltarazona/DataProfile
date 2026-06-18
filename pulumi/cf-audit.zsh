@@ -36,12 +36,14 @@ if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
   export CLOUDFLARE_ACCOUNT_ID=$(echo "$kp" | keepassxc-cli show -s -a account_id "$KEEPASSXC_PASSWORDS" 'Cloudflare_API')
   unset kp
 fi
+export CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN//[$' \t\r\n']/}"
+export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID//[$' \t\r\n']/}"
 [[ -n "${CLOUDFLARE_API_TOKEN:-}" && -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]] || die "Faltan credenciales."
 
 # zona y nombre de proyecto desde Pulumi.prod.yaml (sin necesitar passphrase)
 yaml_val() { grep -E ":$1:" Pulumi.prod.yaml 2>/dev/null | head -1 | sed -E "s/.*:$1:[[:space:]]*//" | tr -d '"'\' ; }
 ZONE="$(yaml_val zoneId)"
-PROJ="$(basename ${0:A:h:h})"
+PROJ="$(basename "$(dirname "$PWD")")"   # nombre del proyecto (carpeta padre)
 
 TS="$(date +%Y%m%d-%H%M%S)"
 OUT="audit/$TS"

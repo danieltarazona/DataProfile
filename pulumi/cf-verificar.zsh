@@ -21,8 +21,11 @@
 set -e
 setopt pipe_fail 2>/dev/null || true
 cd "${0:A:h}"
+PROJ="$(basename "$(dirname "$PWD")")"   # nombre del proyecto (carpeta padre)
 STACK="${PULUMI_STACK:-prod}"
 API="https://api.cloudflare.com/client/v4"
+PAR="${PULUMI_PARALLEL:-1}"           # serializa: evita 'bad file descriptor' del provider en macOS
+ulimit -n 8192 2>/dev/null || true
 
 log()  { print -P "%F{cyan}▸%f $*"; }
 ok()   { print -P "%F{green}✔%f $*"; }
@@ -37,13 +40,17 @@ ensure_tools() {
   command -v pulumi >/dev/null 2>&1 || die "pulumi no encontrado."
 }
 ensure_creds() {
+  CRED_SOURCE="entorno"
   if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+    CRED_SOURCE="KeePassXC"
     [[ -n "${KEEPASSXC_PASSWORDS:-}" ]] || die "Exporta CLOUDFLARE_API_TOKEN y CLOUDFLARE_ACCOUNT_ID (o define KEEPASSXC_PASSWORDS)."
     local kp; read -s "kp?KeePass Password: " < /dev/tty; echo
     export CLOUDFLARE_API_TOKEN=$(echo "$kp" | keepassxc-cli show -s -a api_token  "$KEEPASSXC_PASSWORDS" 'Cloudflare_API')
     export CLOUDFLARE_ACCOUNT_ID=$(echo "$kp" | keepassxc-cli show -s -a account_id "$KEEPASSXC_PASSWORDS" 'Cloudflare_API')
     unset kp
   fi
+  export CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN//[$' \t\r\n']/}"
+  export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID//[$' \t\r\n']/}"
   if [[ -z "${PULUMI_CONFIG_PASSPHRASE:-}" ]]; then
     local pp; read -s "pp?Pulumi passphrase: " < /dev/tty; echo; export PULUMI_CONFIG_PASSPHRASE="$pp"; unset pp
   fi
@@ -55,7 +62,8 @@ cf_code() { curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $CL
 # --- 1. token ---------------------------------------------------------------
 v_token() {
   cf_api "/user/tokens/verify" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);process.exit(j.success&&j.result&&j.result.status==="active"?0:1)})' \
-    && ok "Token activo y con permisos." || die "Token inválido."
+    && ok "Token activo y con permisos." \
+    || die "Token rechazado (origen: ${CRED_SOURCE:-?}, ${#CLOUDFLARE_API_TOKEN} chars). Crea uno nuevo y guárdalo en KeePassXC 'Cloudflare_API/api_token', o haz 'unset CLOUDFLARE_API_TOKEN' si el del entorno está viejo."
 }
 
 # --- 2-3. drift + convergencia ---------------------------------------------
@@ -64,7 +72,7 @@ v_drift() {
   pulumi stack select "$STACK" 2>/dev/null || { warn "No existe el stack '$STACK' (¿ya hiciste cf:up?)."; return 0; }
   log "Drift / convergencia (pulumi preview --refresh)…"
   local plan="/tmp/cf-ver-$$.json"
-  if ! pulumi preview --refresh --json > "$plan" 2>/tmp/cf-ver-$$.err; then
+  if ! pulumi preview --refresh --json --parallel "$PAR" > "$plan" 2>/tmp/cf-ver-$$.err; then
     cat /tmp/cf-ver-$$.err >&2; rm -f "$plan" /tmp/cf-ver-$$.err; warn "No pude refrescar (¿recursos sin crear?)."; return 0
   fi
   node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const cs=j.changeSummary||{};const ch=(cs.create||0)+(cs.update||0)+(cs.delete||0)+(cs.replace||0);console.error(`   crear:${cs.create||0} actualizar:${cs.update||0} BORRAR:${cs.delete||0} REEMPLAZAR:${cs.replace||0} igual:${cs.same||0}`);process.exit(ch>0?1:0)})' < "$plan" \
@@ -117,7 +125,7 @@ v_runtime() {
 }
 
 # ============================== main ========================================
-print -P "%F{magenta}== cf-verificar :: $(basename ${0:A:h:h}) / stack $STACK ==%f"
+print -P "%F{magenta}== cf-verificar :: $PROJ / stack $STACK ==%f"
 ensure_tools
 ensure_creds
 v_token

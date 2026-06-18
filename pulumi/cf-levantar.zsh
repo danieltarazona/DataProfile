@@ -28,10 +28,16 @@ set -e
 setopt pipe_fail 2>/dev/null || true
 
 cd "${0:A:h}"                       # carpeta del script (cloudflare/)
+PROJ="$(basename "$(dirname "$PWD")")"   # nombre del proyecto (carpeta padre)
 MODE="full"
 [[ "${1:-}" == "--preview-only" ]] && MODE="preview"
 STACK="${PULUMI_STACK:-prod}"
 API="https://api.cloudflare.com/client/v4"
+# El provider de Cloudflare se cae con "connect: bad file descriptor" bajo el
+# paralelismo por defecto de Pulumi (32) en macOS. Serializamos (1) para evitarlo;
+# overridable con PULUMI_PARALLEL=N.
+PAR="${PULUMI_PARALLEL:-1}"
+ulimit -n 8192 2>/dev/null || true
 
 log()  { print -P "%F{cyan}▸%f $*"; }
 ok()   { print -P "%F{green}✔%f $*"; }
@@ -51,7 +57,9 @@ ensure_tools() {
 
 # --- 1b. Credenciales (env o KeePassXC) -------------------------------------
 ensure_creds() {
+  CRED_SOURCE="entorno"
   if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+    CRED_SOURCE="KeePassXC"
     [[ -n "${KEEPASSXC_PASSWORDS:-}" ]] || die "Exporta CLOUDFLARE_API_TOKEN y CLOUDFLARE_ACCOUNT_ID (o define KEEPASSXC_PASSWORDS)."
     command -v keepassxc-cli >/dev/null 2>&1 || die "keepassxc-cli no instalado."
     local kp
@@ -60,6 +68,9 @@ ensure_creds() {
     export CLOUDFLARE_ACCOUNT_ID=$(echo "$kp" | keepassxc-cli show -s -a account_id "$KEEPASSXC_PASSWORDS" 'Cloudflare_API')
     unset kp
   fi
+  # recorta espacios/saltos/CR accidentales (los tokens de CF son [A-Za-z0-9_-], sin espacios)
+  export CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN//[$' \t\r\n']/}"
+  export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID//[$' \t\r\n']/}"
   [[ -n "${CLOUDFLARE_API_TOKEN:-}" && -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]] || die "No pude obtener las credenciales de Cloudflare."
   if [[ -z "${PULUMI_CONFIG_PASSPHRASE:-}" ]]; then
     local pp; read -s "pp?Pulumi passphrase (PULUMI_CONFIG_PASSPHRASE): " < /dev/tty; echo
@@ -69,11 +80,12 @@ ensure_creds() {
 
 # --- 2. Token válido + Cloudflare alcanzable --------------------------------
 verify_token() {
-  log "Verificando el token contra Cloudflare…"
+  log "Verificando el token contra Cloudflare (origen: ${CRED_SOURCE:-?}, ${#CLOUDFLARE_API_TOKEN} chars)…"
   local resp
   resp=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$API/user/tokens/verify") || die "No hay red hacia api.cloudflare.com."
   echo "$resp" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);if(j.success&&j.result&&j.result.status==="active"){process.exit(0)}console.error(JSON.stringify(j.errors||j));process.exit(1)})' \
-    && ok "Token activo." || die "El token de Cloudflare no es válido/activo."
+    && ok "Token activo." \
+    || die "Token rechazado por Cloudflare (origen: ${CRED_SOURCE:-?}, ${#CLOUDFLARE_API_TOKEN} chars; un API Token válido = 40). Crea un API Token nuevo (Workers/D1/R2/KV/Pages/Access Edit) y guárdalo en KeePassXC 'Cloudflare_API/api_token'; o si venía del entorno y está viejo:  unset CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID"
 }
 
 # --- 3. Código compila ------------------------------------------------------
@@ -102,7 +114,7 @@ adopt_existing() {
   # Sustituye el account id y deja SOLO la clave resources (Pulumi no admite _comment).
   sed "s/ACCOUNT_ID_HERE/$CLOUDFLARE_ACCOUNT_ID/g" import.json.example \
     | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);process.stdout.write(JSON.stringify({resources:j.resources||[]}))})' > import.json
-  pulumi import -f import.json --yes --generate-code=false || { rm -f import.json; die "Falló el import. Revisa nombres/ids o que el recurso exista."; }
+  pulumi import -f import.json --yes --generate-code=false --parallel "$PAR" || { rm -f import.json; die "Falló el import. Revisa nombres/ids o que el recurso exista."; }
   rm -f import.json
   ok "Servicios existentes adoptados en el estado de Pulumi."
 }
@@ -111,7 +123,7 @@ adopt_existing() {
 safe_preview() {
   log "Calculando plan (pulumi preview)…"
   local plan="/tmp/cf-plan-$$.json"
-  pulumi preview --json > "$plan" 2>/tmp/cf-plan-$$.err || { cat /tmp/cf-plan-$$.err >&2; rm -f "$plan"; die "El preview falló."; }
+  pulumi preview --json --parallel "$PAR" > "$plan" 2>/tmp/cf-plan-$$.err || { cat /tmp/cf-plan-$$.err >&2; rm -f "$plan"; die "El preview falló."; }
   node -e '
     let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{
       const j=JSON.parse(s); const cs=j.changeSummary||{};
@@ -127,7 +139,7 @@ safe_preview() {
 
 # --- 7. Aplicar -------------------------------------------------------------
 apply() {
-  log "Aplicando (pulumi up)…"; pulumi up --yes >/dev/null || die "pulumi up falló."; ok "Infraestructura aplicada."
+  log "Aplicando (pulumi up)…"; pulumi up --yes --parallel "$PAR" >/dev/null || die "pulumi up falló."; ok "Infraestructura aplicada."
 }
 
 # --- 8. Trasladar valores generados → ../wrangler.toml ----------------------
@@ -182,7 +194,7 @@ verify_converged() {
   [[ "$MODE" == "preview" ]] && return 0
   log "Comprobando convergencia (preview final)…"
   local plan="/tmp/cf-conv-$$.json"
-  pulumi preview --json > "$plan" 2>/dev/null || { rm -f "$plan"; warn "No pude comprobar convergencia."; return 0; }
+  pulumi preview --json --parallel "$PAR" > "$plan" 2>/dev/null || { rm -f "$plan"; warn "No pude comprobar convergencia."; return 0; }
   node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const cs=j.changeSummary||{};const ch=(cs.create||0)+(cs.update||0)+(cs.delete||0)+(cs.replace||0);process.exit(ch>0?1:0)})' < "$plan" \
     && ok "Convergió: el estado coincide con tu código." \
     || warn "Quedan cambios pendientes tras el up (revisa con: pulumi preview --diff)."
@@ -190,7 +202,7 @@ verify_converged() {
 }
 
 # ============================== main ========================================
-print -P "%F{magenta}== cf-levantar :: $(basename ${0:A:h:h}) / stack $STACK ==%f"
+print -P "%F{magenta}== cf-levantar :: $PROJ / stack $STACK ==%f"
 ensure_tools
 ensure_creds
 verify_token

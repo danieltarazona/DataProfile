@@ -33,7 +33,11 @@
     "sync:core": "read -s -p 'KeePass Password: ' KPPASS < /dev/tty && echo && CLOUDFLARE_ACCESS_CLIENT_ID=$(echo $KPPASS | keepassxc-cli show -s -a client_id1 $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') CLOUDFLARE_ACCESS_CLIENT_SECRET=$(echo $KPPASS | keepassxc-cli show -s -a client_secret $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') deno run --allow-all ../scripts/sync-library.ts @datakit/react-core",
     "sync:login": "read -s -p 'KeePass Password: ' KPPASS < /dev/tty && echo && CLOUDFLARE_ACCESS_CLIENT_ID=$(echo $KPPASS | keepassxc-cli show -s -a client_id $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') CLOUDFLARE_ACCESS_CLIENT_SECRET=$(echo $KPPASS | keepassxc-cli show -s -a client_secret $KEEPASSXC_PASSWORDS 'DATA/Cloudflare_Access') deno run --allow-all ../scripts/sync-library.ts @datakit/cloudflare-login",
     "sync:latest": "pnpm run sync:core && pnpm run sync:login",
-    "hash:password": "deno run ../scripts/hash_password.ts"
+    "hash:password": "deno run ../scripts/hash_password.ts",
+    "cf:up": "zsh pulumi/cf-levantar.zsh",
+    "cf:preview": "zsh pulumi/cf-levantar.zsh --preview-only",
+    "cf:verify": "zsh pulumi/cf-verificar.zsh",
+    "cf:audit": "zsh pulumi/cf-audit.zsh"
   },
   "dependencies": {
     "@datakit/cloudflare-login": "file:libs/datakit-cloudflare-login-latest.tgz",
