@@ -151,10 +151,28 @@ Use the following commands inside `DataReactProfile/`:
 ### KeePassXC Integration
 - Secrets (tokens, access keys) are never stored in plaintext.
 - Dev scripts use `keepassxc-cli` to prompt for master passwords on `/dev/tty` and extract tokens securely.
+- Centralized helpers in `cloudflare.zsh` (`cf-run`, `cf-kp-get`) streamline credential loading.
 
 ---
 
-## 9. Testing Expectations
+## 9. Centralized Zsh Commands
+
+Available from `cloudflare.zsh` and `github.zsh`:
+
+| Command | Purpose |
+|---|---|
+| `cf-run <cmd>` | Loads CF credentials (TouchID/KeePass) then runs the command |
+| `cf-kp-get <entry> <attr>` | Extracts a single KeePassXC attribute |
+| `gitupload [message]` | `git add . && git commit -m <msg> && git push` |
+
+Use `cf-run` instead of inline KeePassXC patterns:
+```bash
+zsh -ic 'cf-run deno run --allow-all ../scripts/sync-library.ts @datakit/react-core'
+```
+
+---
+
+## 10. Testing Expectations
 
 - Co-located testing uses Vitest.
 - Run `pnpm test` to validate context structures, actions, and API endpoints before deploying.
